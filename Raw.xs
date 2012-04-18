@@ -177,7 +177,7 @@ _ffi_raw_call(self, ...)
 				}
 
 				case 'p': {
-					int val = SvIV(arg);
+					long int val = SvIV(arg);
 					void *ptr = INT2PTR(void *, val);
 					values[i] = &ptr;
 					break;

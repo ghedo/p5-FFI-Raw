@@ -7,7 +7,7 @@ use FFI::Raw;
 
 my $getpid = FFI::Raw -> new(
 	'libc.so', 'getpid',
-	FFI::Raw::integer,
+	FFI::Raw::int,
 	FFI::Raw::void
 );
 

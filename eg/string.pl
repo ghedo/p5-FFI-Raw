@@ -7,16 +7,16 @@ use FFI::Raw;
 
 my $puts = FFI::Raw -> new(
 	'libc.so', 'puts',
-	FFI::Raw::integer,
-	FFI::Raw::string
+	FFI::Raw::int,
+	FFI::Raw::str
 );
 
 say $puts -> call("lol");
 
 my $strerror = FFI::Raw -> new(
 	'libc.so', 'strerror',
-	FFI::Raw::string,
-	FFI::Raw::integer
+	FFI::Raw::str,
+	FFI::Raw::int
 );
 
 say $strerror -> call(2);
