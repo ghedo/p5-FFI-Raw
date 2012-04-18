@@ -28,6 +28,8 @@ B<FFI::Raw> provides a raw foreign function interface for Perl. It can access
 and call functions exported by shared libraries without the need to write a
 single line of XS code.
 
+B<Attention>: this is experimental code, use at your own risk
+
 =head1 METHODS
 
 =head2 new($library, $function, $return_type [, $arg_type ...])
