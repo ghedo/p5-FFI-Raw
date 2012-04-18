@@ -17,7 +17,7 @@ my $strstr = FFI::Raw -> new(
 	'libc.so', 'strstr',
 	FFI::Raw::str,
 	FFI::Raw::str,
-	FFI::Raw::ptr
+	FFI::Raw::str
 );
 
 say $strstr -> call('somestring', 'string');
