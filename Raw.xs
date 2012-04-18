@@ -120,6 +120,24 @@ _ffi_raw_destroy(self)
 		free(ffi_raw -> args);
 		free(ffi_raw);
 
+#define PTR_TO_INT(ARG)				\
+	newSViv(PTR2IV(ARG))
+
+
+#define FFI_SET_ARG(TYPE, FN) {			\
+	TYPE *val = malloc(sizeof(TYPE));	\
+	*val = FN(arg);				\
+	values[i] = val;			\
+	break;					\
+}
+
+#define FFI_CALL(TYPE, FN) {			\
+	TYPE result;				\
+	ffi_call(&ffi_raw -> cif, ffi_raw -> fn, &result, values);	\
+	output = FN(result);			\
+	break;					\
+}
+
 SV *
 _ffi_raw_call(self, ...)
 	SV *self
@@ -142,45 +160,17 @@ _ffi_raw_call(self, ...)
 			SV *arg = ST(i + 1);
 
 			switch (ffi_raw -> args_types[i]) {
-				case 'v': {
-					break;
-				}
-
-				case 'i': {
-					int *val = malloc(sizeof(int));
-					*val = SvIV(arg);
-					values[i] = val;
-					break;
-				}
-
-				case 'c': {
-					char *val = malloc(sizeof(char));
-					*val = SvIV(arg);
-					values[i] = val;
-					break;
-				}
-
-				case 'f': {
-					float *val = malloc(sizeof(float));
-					*val = SvNV(arg);
-					values[i] = &val;
-					break;
-				}
-
-				case 'd': {
-					double *val = malloc(sizeof(double));
-					*val = SvNV(arg);
-					values[i] = val;
-					break;
-				}
-
+				case 'v': break;
+				case 'i': FFI_SET_ARG(int, SvIV)
+				case 'c': FFI_SET_ARG(char, SvIV)
+				case 'f': FFI_SET_ARG(float, SvNV)
+				case 'd': FFI_SET_ARG(double, SvNV)
 				case 's': {
 					char **val = malloc(sizeof(char *));
 					*val = SvPV(arg, l);
 					values[i] = val;
 					break;
 				}
-
 				case 'p': {
 					long int val = SvIV(arg);
 					void **ptr = malloc(sizeof(void *));
@@ -193,65 +183,18 @@ _ffi_raw_call(self, ...)
 
 		switch (ffi_raw -> ret_type) {
 			case 'v': {
-				int result;
-
 				ffi_call(
 					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
+					NULL, values
 				);
 
 				output = newSV(0);
 				break;
 			}
-
-			case 'i': {
-				int result;
-
-				ffi_call(
-					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
-				);
-
-				output = newSViv(result);
-				break;
-			}
-
-			case 'c': {
-				char result;
-
-				ffi_call(
-					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
-				);
-
-				output = newSViv(result);
-				break;
-			}
-
-			case 'f': {
-				float result;
-
-				ffi_call(
-					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
-				);
-
-				output = newSVnv(result);
-				break;
-			}
-
-			case 'd': {
-				double result;
-
-				ffi_call(
-					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
-				);
-
-				output = newSVnv(result);
-				break;
-			}
-
+			case 'i': FFI_CALL(int, newSViv)
+			case 'c': FFI_CALL(char, newSViv)
+			case 'f': FFI_CALL(float, newSVnv)
+			case 'd': FFI_CALL(double, newSVnv)
 			case 's': {
 				char *result;
 
@@ -263,18 +206,7 @@ _ffi_raw_call(self, ...)
 				output = newSVpv(result, 0);
 				break;
 			}
-
-			case 'p': {
-				void *result;
-
-				ffi_call(
-					&ffi_raw -> cif, ffi_raw -> fn,
-					&result, values
-				);
-
-				output = newSViv(PTR2IV(result));
-				break;
-			}
+			case 'p': FFI_CALL(void *, PTR_TO_INT)
 		}
 
 		free(values);
