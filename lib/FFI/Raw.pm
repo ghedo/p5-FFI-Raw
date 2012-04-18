@@ -42,6 +42,8 @@ of the wanted function.
 
 sub new  { FFI::Raw::_ffi_raw_new(@_)  }
 
+sub DESTROY { FFI::Raw::_ffi_raw_destroy(shift) }
+
 =head2 $self -> call([$arg ...])
 
 Execute the C<FFI::Raw> function C<$self>. This function takes also a variable

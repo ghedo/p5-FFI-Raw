@@ -5,6 +5,23 @@ use warnings;
 
 use FFI::Raw;
 
+my $strlen = FFI::Raw -> new(
+	'libc.so', 'strlen',
+	FFI::Raw::int,
+	FFI::Raw::str
+);
+
+say $strlen -> call('somestring');
+
+my $strstr = FFI::Raw -> new(
+	'libc.so', 'strstr',
+	FFI::Raw::str,
+	FFI::Raw::str,
+	FFI::Raw::ptr
+);
+
+say $strstr -> call('somestring', 'string');
+
 my $puts = FFI::Raw -> new(
 	'libc.so', 'puts',
 	FFI::Raw::int,

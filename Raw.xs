@@ -91,7 +91,7 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		}
 
 		status = ffi_prep_cif(
-			&ffi_raw -> cif, FFI_DEFAULT_ABI, 1,
+			&ffi_raw -> cif, FFI_DEFAULT_ABI, ffi_raw -> argc,
 			ffi_raw -> ret, ffi_raw -> args
 		);
 
@@ -115,7 +115,7 @@ _ffi_raw_destroy(self)
 		else
 			Perl_croak(aTHX_ "$var is not of type FFI::Raw");
 
-		dlclose(ffi_raw -> handle);
+		/*dlclose(ffi_raw -> handle);*/
 		free(ffi_raw -> args_types);
 		free(ffi_raw -> args);
 		free(ffi_raw);
@@ -147,44 +147,50 @@ _ffi_raw_call(self, ...)
 				}
 
 				case 'i': {
-					int val = SvIV(arg);
-					values[i] = &val;
+					int *val = malloc(sizeof(int));
+					*val = SvIV(arg);
+					values[i] = val;
 					break;
 				}
 
 				case 'c': {
-					char val = SvIV(arg);
-					values[i] = &val;
+					char *val = malloc(sizeof(char));
+					*val = SvIV(arg);
+					values[i] = val;
 					break;
 				}
 
 				case 'f': {
-					float val = SvNV(arg);
+					float *val = malloc(sizeof(float));
+					*val = SvNV(arg);
 					values[i] = &val;
 					break;
 				}
 
 				case 'd': {
-					double val = SvNV(arg);
-					values[i] = &val;
+					double *val = malloc(sizeof(double));
+					*val = SvNV(arg);
+					values[i] = val;
 					break;
 				}
-				
+
 				case 's': {
-					char *val = SvPV(arg, l);
-					values[i] = &val;
+					char **val = malloc(sizeof(char *));
+					*val = SvPV(arg, l);
+					values[i] = val;
 					break;
 				}
 
 				case 'p': {
 					long int val = SvIV(arg);
-					void *ptr = INT2PTR(void *, val);
-					values[i] = &ptr;
+					void **ptr = malloc(sizeof(void *));
+					*ptr = INT2PTR(void *, val);
+					values[i] = ptr;
 					break;
 				}
 			}
 		}
-		
+
 		switch (ffi_raw -> ret_type) {
 			case 'v': {
 				int result;
@@ -241,11 +247,11 @@ _ffi_raw_call(self, ...)
 					&ffi_raw -> cif, ffi_raw -> fn,
 					&result, values
 				);
-				
+
 				output = newSVnv(result);
 				break;
 			}
-			
+
 			case 's': {
 				char *result;
 
@@ -270,6 +276,8 @@ _ffi_raw_call(self, ...)
 				break;
 			}
 		}
+
+		free(values);
 
 		RETVAL = output;
 	OUTPUT:

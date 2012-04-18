@@ -5,6 +5,15 @@ use warnings;
 
 use FFI::Raw;
 
+my $fdim = FFI::Raw -> new(
+	'libm.so', 'fdim',
+	FFI::Raw::double, # return value
+	FFI::Raw::double, # arg #1
+	FFI::Raw::double  # arg #2
+);
+
+say $fdim -> call(7.0, 2.0);
+
 my $cos = FFI::Raw -> new(
 	'libm.so', 'cos',
 	FFI::Raw::double, # return value
