@@ -5,8 +5,10 @@ use warnings;
 
 use FFI::Raw;
 
+my $libc = 'libc.so.6';
+
 my $puts = FFI::Raw -> new(
-	'libc.so', 'atoi',
+	$libc, 'atoi',
 	FFI::Raw::int,
 	FFI::Raw::str
 );

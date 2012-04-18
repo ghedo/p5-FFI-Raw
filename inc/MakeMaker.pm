@@ -8,7 +8,7 @@ extends 'Dist::Zilla::Plugin::MakeMaker::Awesome';
 override _build_MakeFile_PL_template => sub {
 	my ($self) = @_;
 	my $template  = "use Devel::CheckLib;\n";
-	$template .= "check_lib_or_exit(lib => 'dl');\n";
+	$template .= "check_lib_or_exit(lib => 'dl');\n" if $^O ne 'MSWin32';
 	$template .= "check_lib_or_exit(lib => 'ffi');\n";
 
 	return $template.super();

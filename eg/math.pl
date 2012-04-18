@@ -5,8 +5,10 @@ use warnings;
 
 use FFI::Raw;
 
+my $libm = 'libm.so';
+
 my $fdim = FFI::Raw -> new(
-	'libm.so', 'fdim',
+	$libm, 'fdim',
 	FFI::Raw::double, # return value
 	FFI::Raw::double, # arg #1
 	FFI::Raw::double  # arg #2

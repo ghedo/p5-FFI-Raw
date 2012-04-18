@@ -4,11 +4,12 @@ use Test::More;
 
 use FFI::Raw;
 
+my $libc = 'libc.so.6';
+
 my $strstr = FFI::Raw -> new(
-	'libc.so', 'strstr',
+	$libc, 'strstr',
 	FFI::Raw::str,
-	FFI::Raw::str,
-	FFI::Raw::str
+	FFI::Raw::str, FFI::Raw::str
 );
 
 is($strstr -> call('somestring', 'string'), 'string');

@@ -4,11 +4,12 @@ use Test::More;
 
 use FFI::Raw;
 
+my $libm = 'libm.so';
+
 my $fmax = FFI::Raw -> new(
-	'libm.so', 'fmax',
+	$libm, 'fmax',
 	FFI::Raw::double,
-	FFI::Raw::double,
-	FFI::Raw::double
+	FFI::Raw::double, FFI::Raw::double
 );
 
 is($fmax -> call(2.0, 3.0), 3);

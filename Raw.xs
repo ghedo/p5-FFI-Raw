@@ -6,7 +6,12 @@
 #include <stdlib.h>
 
 #include <ffi.h>
-#include <dlfcn.h>
+
+#ifdef _WIN32
+# include <windows.h>
+#else
+# include <dlfcn.h>
+#endif
 
 typedef struct FFI_RAW {
 	void *fn;
@@ -58,16 +63,29 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		SV *self = newSV(1);
 		FFI_Raw_t *ffi_raw = malloc(sizeof(FFI_Raw_t));
 	CODE:
-
 		SvGETMAGIC(library);
 		library_name = SvPV(library, library_len);
 
 		SvGETMAGIC(function);
 		function_name = SvPV(function, function_len);
+#ifdef _WIN32
+		GetLastError();
+
+		ffi_raw -> handle = LoadLibrary(library_name);
+
+		/*if ((error = GetLastError()) != NULL)
+			Perl_croak(aTHX_ error);*/
+
+		ffi_raw -> fn = GetProcAddress(
+			ffi_raw -> handle, function_name
+		);
+
+		/*if ((error = GetLastError()) != NULL)
+			Perl_croak(aTHX_ error);*/
+#else
+		dlerror();
 
 		ffi_raw -> handle = dlopen(library_name, RTLD_LAZY);
-
-		dlerror();
 
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ error);
@@ -76,7 +94,7 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ error);
-
+#endif
 		ffi_raw -> ret  = _ffi_raw_get_type(SvIV(ret_type));
 		ffi_raw -> ret_type = SvIV(ret_type);
 		ffi_raw -> argc = items - 4;
@@ -114,8 +132,11 @@ _ffi_raw_destroy(self)
 			ffi_raw = INT2PTR(FFI_Raw_t *, SvIV((SV *) SvRV(self)));
 		else
 			Perl_croak(aTHX_ "$var is not of type FFI::Raw");
-
+#ifdef _WIN32
+		/*FreeLibrary(ffi_raw -> handle);*/
+#else
 		/*dlclose(ffi_raw -> handle);*/
+#endif
 		free(ffi_raw -> args_types);
 		free(ffi_raw -> args);
 		free(ffi_raw);
