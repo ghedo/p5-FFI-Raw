@@ -129,9 +129,9 @@ _ffi_raw_destroy(self)
 
 	CODE:
 #ifdef _WIN32
-		/*FreeLibrary(self -> handle);*/
+		FreeLibrary(self -> handle);
 #else
-		/*dlclose(self -> handle);*/
+		dlclose(self -> handle);
 #endif
 		free(self -> args_types);
 		free(self -> args);
