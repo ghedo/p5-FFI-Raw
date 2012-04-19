@@ -164,7 +164,7 @@ _ffi_raw_call(self, ...)
 		SV *output;
 		void **values;
 	CODE:
-		if (self -> argc != (items - i))
+		if (self -> argc != (items - 1))
 			Perl_croak(aTHX_ "Wrong number of arguments");
 
 		values = malloc(sizeof(void *) * self -> argc);
