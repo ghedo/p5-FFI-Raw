@@ -76,6 +76,14 @@ Return a FFI::Raw integer type.
 
 sub int    { ord 'i' };
 
+=head2 FFI::Raw::uint
+
+Return a FFI::Raw unsigned integer type.
+
+=cut
+
+sub uint    { ord 'I' };
+
 =head2 FFI::Raw::char
 
 Return a FFI::Raw char type.
@@ -83,6 +91,14 @@ Return a FFI::Raw char type.
 =cut
 
 sub char   { ord 'c' };
+
+=head2 FFI::Raw::uchar
+
+Return a FFI::Raw unsigned char type.
+
+=cut
+
+sub uchar   { ord 'C' };
 
 =head2 FFI::Raw::float
 

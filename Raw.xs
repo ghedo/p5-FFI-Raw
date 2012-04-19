@@ -29,7 +29,9 @@ void *_ffi_raw_get_type(char type) {
 	switch (type) {
 		case 'v': return &ffi_type_void;
 		case 'i': return &ffi_type_sint32;
+		case 'I': return &ffi_type_uint32;
 		case 'c': return &ffi_type_sint8;
+		case 'C': return &ffi_type_uint8;
 		case 'f': return &ffi_type_float;
 		case 'd': return &ffi_type_double;
 		case 's':
@@ -183,7 +185,9 @@ _ffi_raw_call(self, ...)
 			switch (ffi_raw -> args_types[i]) {
 				case 'v': break;
 				case 'i': FFI_SET_ARG(int, SvIV)
+				case 'I': FFI_SET_ARG(int, SvUV)
 				case 'c': FFI_SET_ARG(char, SvIV)
+				case 'C': FFI_SET_ARG(int, SvUV)
 				case 'f': FFI_SET_ARG(float, SvNV)
 				case 'd': FFI_SET_ARG(double, SvNV)
 				case 's': {
@@ -213,7 +217,9 @@ _ffi_raw_call(self, ...)
 				break;
 			}
 			case 'i': FFI_CALL(int, newSViv)
+			case 'I': FFI_CALL(int, newSVuv)
 			case 'c': FFI_CALL(char, newSViv)
+			case 'C': FFI_CALL(char, newSVuv)
 			case 'f': FFI_CALL(float, newSVnv)
 			case 'd': FFI_CALL(double, newSVnv)
 			case 's': {
