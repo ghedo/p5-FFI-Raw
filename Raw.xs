@@ -36,7 +36,7 @@ void *_ffi_raw_get_type(char type) {
 		case 'd': return &ffi_type_double;
 		case 's':
 		case 'p': return &ffi_type_pointer;
-		default: Perl_croak(aTHX_ "invalid type");
+		default: Perl_croak(aTHX_ "Invalid type '%c'", type);
 	}
 }
 
@@ -116,7 +116,7 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		);
 
 		if (status != FFI_OK)
-			Perl_croak(aTHX_ "error creating calling interface");
+			Perl_croak(aTHX_ "Error creating calling interface");
 
 
 		RETVAL = sv_setref_pv(self, "FFI::Raw", ffi_raw);
@@ -175,6 +175,9 @@ _ffi_raw_call(self, ...)
 			ffi_raw = INT2PTR(FFI_Raw_t *, SvIV((SV *) SvRV(self)));
 		else
 			Perl_croak(aTHX_ "$var is not of type FFI::Raw");
+
+		if (ffi_raw -> argc != (items - i))
+			Perl_croak(aTHX_ "Wrong number of arguments");
 
 		values = malloc(sizeof(void *) * ffi_raw -> argc);
 
