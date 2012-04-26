@@ -9,6 +9,8 @@ use FFI::Raw;
 
 FFI::Raw::MemPtr - Memory allocation and pointers for FFI::Raw
 
+=head1 METHODS
+
 =head2 new( $number )
 
 Allocate C<$number> bytes and return a C<FFI::Raw::MemPtr> pointing to the
