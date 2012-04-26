@@ -42,7 +42,7 @@ void *_ffi_raw_get_type(char type) {
 
 #define NEW_BASIC_ITEMS 3
 
-MODULE = FFI::Raw					PACKAGE = FFI::Raw
+MODULE = FFI::Raw				PACKAGE = FFI::Raw
 
 FFI_Raw_t *
 _ffi_raw_new(class, library, function, ret_type, ...)
@@ -121,7 +121,6 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		if (status != FFI_OK)
 			Perl_croak(aTHX_ "Error creating calling interface");
 
-
 		RETVAL = ffi_raw;
 	OUTPUT:
 		RETVAL
@@ -143,6 +142,8 @@ _ffi_raw_destroy(self)
 #define PTR_TO_INT(ARG)				\
 	newSViv(PTR2IV(ARG))
 
+#define INT_TO_PTR(ARG)				\
+	INT2PTR(void *, SvIV(ARG))
 
 #define FFI_SET_ARG(TYPE, FN) {			\
 	TYPE *val;				\
@@ -192,11 +193,11 @@ _ffi_raw_call(self, ...)
 					break;
 				}
 				case 'p': {
-					long int val = SvIV(arg);
-					void **ptr; Newx(ptr, 1, void *);
-					*ptr = INT2PTR(void *, val);
-					values[i] = ptr;
-					break;
+					if (sv_isobject(arg) && sv_derived_from(
+						      arg, "FFI::Raw::MemPtr"))
+						arg = SvRV(arg);
+
+					FFI_SET_ARG(void *, INT_TO_PTR)
 				}
 			}
 		}
@@ -239,3 +240,27 @@ _ffi_raw_call(self, ...)
 		RETVAL = output;
 	OUTPUT:
 		RETVAL
+
+SV *
+_ffi_raw_new_ptr(number)
+	unsigned int number
+
+	INIT:
+		void *temp;
+		SV *output;
+
+	CODE:
+		Newx(temp, number, char);
+		output = PTR_TO_INT(temp);
+
+		RETVAL = output;
+	OUTPUT:
+		RETVAL
+
+void
+_ffi_raw_destroy_ptr(arg)
+	SV *arg
+
+	CODE:
+		void **ptr = INT_TO_PTR(SvRV(arg));
+		Safefree(ptr);

@@ -58,6 +58,22 @@ must match the types passed to C<new>.
 
 sub call { FFI::Raw::_ffi_raw_call(@_) }
 
+=head2 malloc( $number )
+
+Allocate C<$number> bytes and return a FFI::Raw::ptr to the allocated memory.
+
+=cut
+
+sub malloc { FFI::Raw::_ffi_raw_new_ptr(@_) }
+
+=head2 free( $ptr )
+
+Deallocate the FFI::Raw::ptr C<$ptr> previously allocated with FFI::Raw::malloc.
+
+=cut
+
+sub free { FFI::Raw::_ffi_raw_destroy_ptr(@_) }
+
 =head1 TYPES
 
 =head2 FFI::Raw::void
