@@ -60,9 +60,11 @@ must match the types passed to C<new>.
 
 sub call { FFI::Raw::_ffi_raw_call(@_) }
 
-=head2 malloc( $number )
+=head2 memptr( $number )
 
-Allocate C<$number> bytes and return a FFI::Raw::ptr to the allocated memory.
+Allocate C<$number> bytes and return a C<FFI::Raw::MemPtr> pointing to the
+allocated memory. This can be passed to functions which take a FFI::Raw::ptr
+argument.
 
 =cut
 
