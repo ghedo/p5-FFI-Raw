@@ -13,6 +13,6 @@ my $fmax = FFI::Raw -> new(
 );
 
 is($fmax -> call(2.0, 3.0), 3);
-is($fmax -> call(2.5, 3.8), 3.8);
+is($fmax -> call(2.5, 4.0), 4.0);
 
 done_testing;
