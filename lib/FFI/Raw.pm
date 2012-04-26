@@ -6,6 +6,8 @@ use warnings;
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
+use FFI::Raw::MemPtr;
+
 =head1 NAME
 
 FFI::Raw - Raw FFI library for Perl
@@ -64,15 +66,7 @@ Allocate C<$number> bytes and return a FFI::Raw::ptr to the allocated memory.
 
 =cut
 
-sub malloc { FFI::Raw::_ffi_raw_new_ptr(@_) }
-
-=head2 free( $ptr )
-
-Deallocate the FFI::Raw::ptr C<$ptr> previously allocated with FFI::Raw::malloc.
-
-=cut
-
-sub free { FFI::Raw::_ffi_raw_destroy_ptr(@_) }
+sub memptr { FFI::Raw::MemPtr -> new(@_) }
 
 =head1 TYPES
 
