@@ -177,6 +177,7 @@ _ffi_raw_destroy(self)
 	FFI_Raw_t *self
 
 	CODE:
+		if (self -> handle)
 #ifdef _WIN32
 		FreeLibrary(self -> handle);
 #else
