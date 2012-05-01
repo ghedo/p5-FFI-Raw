@@ -26,11 +26,16 @@ FFI::Raw - Raw FFI library for Perl
 
 =head1 DESCRIPTION
 
-B<FFI::Raw> provides a raw foreign function interface for Perl. It can access
-and call functions exported by shared libraries without the need to write C/XS
-code. Dynamic symbols are automatically resolved at runtime so that the only
+B<FFI::Raw> provides a raw foreign function interface for Perl based on
+L<libffi|http://sourceware.org/libffi/>. It can access and call functions
+exported by shared libraries without the need to write C/XS code.
+
+Dynamic symbols can be automatically resolved at runtime so that the only
 information needed to use B<FFI::Raw> is the name (or path) of the target
-library, the name of the function to call and its signature.
+library, the name of the function to call and its signature (though it is
+also possible to pass a function pointer).
+
+Note that this module has nothing to do with L<FFI>.
 
 B<Attention>: this is experimental code, use at your own risk
 
