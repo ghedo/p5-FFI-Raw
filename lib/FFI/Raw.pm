@@ -164,6 +164,10 @@ sub ptr    { ord 'p' };
 
 Alessandro Ghedini <alexbio@cpan.org>
 
+=head1 SEE ALSO
+
+L<FFI>, L<Ctypes|http://gitorious.org/perl-ctypes>
+
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2012 Alessandro Ghedini.
