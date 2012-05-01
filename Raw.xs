@@ -40,7 +40,11 @@ void *_ffi_raw_get_type(char type) {
 	}
 }
 
-#define NEW_BASIC_ITEMS 3
+#define PTR_TO_INT(ARG)				\
+	newSViv(PTR2IV(ARG))
+
+#define INT_TO_PTR(ARG)				\
+	INT2PTR(void *, SvIV(ARG))
 
 MODULE = FFI::Raw				PACKAGE = FFI::Raw
 
@@ -63,7 +67,6 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		const char *function_name;
 
 		FFI_Raw_t *ffi_raw;
-		SV *self = newSV(1);
 	CODE:
 		Newx(ffi_raw, 1, FFI_Raw_t);
 
@@ -125,6 +128,50 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 	OUTPUT:
 		RETVAL
 
+FFI_Raw_t *
+_ffi_raw_new_from_ptr(class, function, ret_type, ...)
+	SV *class
+	SV *function
+	SV *ret_type
+
+	INIT:
+		int i;
+		char *error;
+		ffi_status status;
+
+		FFI_Raw_t *ffi_raw;
+	CODE:
+		Newx(ffi_raw, 1, FFI_Raw_t);
+
+		ffi_raw -> handle = NULL;
+		ffi_raw -> fn   = INT_TO_PTR(function);
+
+		ffi_raw -> ret  = _ffi_raw_get_type(SvIV(ret_type));
+		ffi_raw -> ret_type = SvIV(ret_type);
+		ffi_raw -> argc = items - 3;
+
+		Newx(ffi_raw -> args, ffi_raw -> argc, ffi_type *);
+		Newx(ffi_raw -> args_types, ffi_raw -> argc, char);
+
+		for (i = 3; i < items; i++) {
+			char type = SvIV(ST(i));
+
+			ffi_raw -> args_types[i - 3] = type;
+			ffi_raw -> args[i - 3] = _ffi_raw_get_type(type);
+		}
+
+		status = ffi_prep_cif(
+			&ffi_raw -> cif, FFI_DEFAULT_ABI, ffi_raw -> argc,
+			ffi_raw -> ret, ffi_raw -> args
+		);
+
+		if (status != FFI_OK)
+			Perl_croak(aTHX_ "Error creating calling interface");
+
+		RETVAL = ffi_raw;
+	OUTPUT:
+		RETVAL
+
 void
 _ffi_raw_destroy(self)
 	FFI_Raw_t *self
@@ -138,12 +185,6 @@ _ffi_raw_destroy(self)
 		Safefree(self -> args_types);
 		Safefree(self -> args);
 		Safefree(self);
-
-#define PTR_TO_INT(ARG)				\
-	newSViv(PTR2IV(ARG))
-
-#define INT_TO_PTR(ARG)				\
-	INT2PTR(void *, SvIV(ARG))
 
 #define FFI_SET_ARG(TYPE, FN) {			\
 	TYPE *val;				\

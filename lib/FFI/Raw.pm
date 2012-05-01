@@ -46,7 +46,18 @@ of the wanted function.
 
 =cut
 
-sub new  { FFI::Raw::_ffi_raw_new(@_)  }
+sub new   { FFI::Raw::_ffi_raw_new(@_)  }
+
+=head2 new_from_ptr( $function_ptr, $return_type [, $arg_type ...] )
+
+Create a new C<FFI::Raw> object from the C<$function_ptr> function pointer.
+
+This function takes also a variable number of types, representing the argument
+of the wanted function.
+
+=cut
+
+sub new_from_ptr { FFI::Raw::_ffi_raw_new_from_ptr(@_)  }
 
 sub DESTROY { FFI::Raw::_ffi_raw_destroy(shift) }
 
