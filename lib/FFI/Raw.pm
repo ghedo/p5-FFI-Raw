@@ -60,7 +60,7 @@ Execute the C<FFI::Raw> function C<$self>. This function takes also a variable
 number of arguments, which are passed to the called function. The argument types
 must match the types passed to C<new>.
 
-SUBROUTINES
+=head1 SUBROUTINES
 
 =head2 memptr( $number )
 
