@@ -60,11 +60,14 @@ Execute the C<FFI::Raw> function C<$self>. This function takes also a variable
 number of arguments, which are passed to the called function. The argument types
 must match the types passed to C<new>.
 
+SUBROUTINES
+
 =head2 memptr( $number )
 
 Allocate C<$number> bytes and return a C<FFI::Raw::MemPtr> pointing to the
 allocated memory. This can be passed to functions which take a FFI::Raw::ptr
-argument.
+argument. A C<FFI::Raw::MemPtr> can be converted to a Perl string using the
+C<tostr()> method.
 
 =cut
 
