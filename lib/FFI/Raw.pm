@@ -6,8 +6,6 @@ use warnings;
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
-use FFI::Raw::MemPtr;
-
 =head1 NAME
 
 FFI::Raw - Raw FFI library for Perl
@@ -49,10 +47,6 @@ C<$function> with return type C<$return_type> and creates a calling interface.
 This function takes also a variable number of types, representing the argument
 of the wanted function.
 
-=cut
-
-sub new   { FFI::Raw::_ffi_raw_new(@_)  }
-
 =head2 new_from_ptr( $function_ptr, $return_type [, $arg_type ...] )
 
 Create a new C<FFI::Raw> object from the C<$function_ptr> function pointer.
@@ -60,21 +54,11 @@ Create a new C<FFI::Raw> object from the C<$function_ptr> function pointer.
 This function takes also a variable number of types, representing the argument
 of the wanted function.
 
-=cut
-
-sub new_from_ptr { FFI::Raw::_ffi_raw_new_from_ptr(@_)  }
-
-sub DESTROY { FFI::Raw::_ffi_raw_destroy(shift) }
-
 =head2 call( [$arg ...] )
 
 Execute the C<FFI::Raw> function C<$self>. This function takes also a variable
 number of arguments, which are passed to the called function. The argument types
 must match the types passed to C<new>.
-
-=cut
-
-sub call { FFI::Raw::_ffi_raw_call(@_) }
 
 =head2 memptr( $number )
 

@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <ffi.h>
 
@@ -24,6 +25,8 @@ typedef struct FFI_RAW {
 	char *args_types;
 	unsigned int argc;
 } FFI_Raw_t;
+
+typedef void FFI_Raw_MemPtr_t;
 
 void *_ffi_raw_get_type(char type) {
 	switch (type) {
@@ -49,7 +52,7 @@ void *_ffi_raw_get_type(char type) {
 MODULE = FFI::Raw				PACKAGE = FFI::Raw
 
 FFI_Raw_t *
-_ffi_raw_new(class, library, function, ret_type, ...)
+new(class, library, function, ret_type, ...)
 	SV *class
 	SV *library
 	SV *function
@@ -129,7 +132,7 @@ _ffi_raw_new(class, library, function, ret_type, ...)
 		RETVAL
 
 FFI_Raw_t *
-_ffi_raw_new_from_ptr(class, function, ret_type, ...)
+new_from_ptr(class, function, ret_type, ...)
 	SV *class
 	SV *function
 	SV *ret_type
@@ -173,7 +176,7 @@ _ffi_raw_new_from_ptr(class, function, ret_type, ...)
 		RETVAL
 
 void
-_ffi_raw_destroy(self)
+DESTROY(self)
 	FFI_Raw_t *self
 
 	CODE:
@@ -203,7 +206,7 @@ _ffi_raw_destroy(self)
 }
 
 SV *
-_ffi_raw_call(self, ...)
+call(self, ...)
 	FFI_Raw_t *self
 
 	INIT:
@@ -283,8 +286,11 @@ _ffi_raw_call(self, ...)
 	OUTPUT:
 		RETVAL
 
-SV *
-_ffi_raw_new_ptr(number)
+MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
+
+FFI_Raw_MemPtr_t *
+new(class, number)
+	SV *class
 	unsigned int number
 
 	INIT:
@@ -293,16 +299,15 @@ _ffi_raw_new_ptr(number)
 
 	CODE:
 		Newx(temp, number, char);
-		output = PTR_TO_INT(temp);
 
-		RETVAL = output;
+		RETVAL = temp;
 	OUTPUT:
 		RETVAL
 
 void
-_ffi_raw_destroy_ptr(arg)
-	SV *arg
+DESTROY(self)
+	FFI_Raw_MemPtr_t *self
 
 	CODE:
-		void **ptr = INT_TO_PTR(SvRV(arg));
+		void **ptr = self;
 		Safefree(ptr);
