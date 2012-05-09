@@ -304,6 +304,19 @@ new(class, number)
 	OUTPUT:
 		RETVAL
 
+SV *
+tostr(self)
+	FFI_Raw_MemPtr_t *self
+
+	INIT:
+		STRLEN l;
+	CODE:
+		l = strlen((char *) self);
+
+		RETVAL = newSVpv(self, l);
+	OUTPUT:
+		RETVAL
+
 void
 DESTROY(self)
 	FFI_Raw_MemPtr_t *self
