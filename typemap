@@ -1,11 +1,14 @@
 FFI_Raw_t *			T_FFI_RAW
 FFI_Raw_MemPtr_t *		T_FFI_RAW_MEMPTR
+FFI_Raw_Callback_t *		T_FFI_RAW_CALLBACK
 
 OUTPUT
 T_FFI_RAW
 	sv_setref_pv($arg, \"FFI::Raw\", (void *) $var);
 T_FFI_RAW_MEMPTR
 	sv_setref_pv($arg, \"FFI::Raw::MemPtr\", (void *) $var);
+T_FFI_RAW_CALLBACK
+	sv_setref_pv($arg, \"FFI::Raw::Callback\", (void *) $var);
 
 INPUT
 T_FFI_RAW
@@ -18,3 +21,8 @@ T_FFI_RAW_MEMPTR
 		$var = INT2PTR($type, SvIV((SV *) SvRV($arg)));
 	else
 		Perl_croak(aTHX_ \"$var is not of type FFI::Raw::MemPtr\");
+T_FFI_RAW_CALLBACK
+	if (sv_isobject($arg) && sv_derived_from($arg, \"FFI::Raw::Callback\"))
+		$var = INT2PTR($type, SvIV((SV *) SvRV($arg)));
+	else
+		Perl_croak(aTHX_ \"$var is not of type FFI::Raw::Callback\");

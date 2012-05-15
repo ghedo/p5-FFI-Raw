@@ -73,6 +73,15 @@ C<tostr()> method.
 
 sub memptr { FFI::Raw::MemPtr -> new(@_) }
 
+=head2 callback( $coderef, $ret_type [, $arg_type ...] )
+
+Create a callback, given a code reference C<$coderef>, its return type
+C<$ret_type> and the argument types it takes.
+
+=cut
+
+sub callback { FFI::Raw::Callback -> new(@_) }
+
 =head1 TYPES
 
 =head2 FFI::Raw::void

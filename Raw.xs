@@ -28,6 +28,19 @@ typedef struct FFI_RAW {
 
 typedef void FFI_Raw_MemPtr_t;
 
+typedef struct FFI_RAW_CALLBACK {
+	void *fn;
+	SV *coderef;
+	ffi_closure *closure;
+
+	ffi_cif cif;
+	ffi_type *ret;
+	char ret_type;
+	ffi_type **args;
+	char *args_types;
+	unsigned int argc;
+} FFI_Raw_Callback_t;
+
 void *_ffi_raw_get_type(char type) {
 	switch (type) {
 		case 'v': return &ffi_type_void;
@@ -45,11 +58,93 @@ void *_ffi_raw_get_type(char type) {
 	}
 }
 
-#define PTR_TO_INT(ARG)				\
+#define PTR_TO_INT(ARG)							\
 	newSViv(PTR2IV(ARG))
 
-#define INT_TO_PTR(ARG)				\
+#define INT_TO_PTR(ARG)							\
 	INT2PTR(void *, SvIV(ARG))
+
+#define INIT_FFI_CIF(ARG, ARGC)						\
+	int i;								\
+	ARG -> ret	= _ffi_raw_get_type(SvIV(ret_type));		\
+	ARG -> ret_type	= SvIV(ret_type);				\
+	ARG -> argc	= items - ARGC;					\
+									\
+	Newx(ARG -> args, ARG -> argc, ffi_type *);			\
+	Newx(ARG -> args_types, ARG -> argc, char);			\
+									\
+	for (i = ARGC; i < items; i++) {				\
+		char type = SvIV(ST(i));				\
+									\
+		ARG -> args_types[i - ARGC] = type;			\
+		ARG -> args[i - ARGC] = _ffi_raw_get_type(type);	\
+	}								\
+									\
+	status = ffi_prep_cif(						\
+		&ARG -> cif, FFI_DEFAULT_ABI, ARG -> argc,		\
+		ARG -> ret, ARG -> args					\
+	);								\
+									\
+	if (status != FFI_OK)						\
+		Perl_croak(aTHX_ "Error creating calling interface");
+
+#define FFI_PUSH_PARAM(TYPE, FN) {					\
+	SV *arg = FN(*(TYPE *) args[i]);				\
+	XPUSHs(sv_2mortal(arg));					\
+	break;								\
+}
+
+void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
+	dSP;
+
+	int i, retc;
+	FFI_Raw_Callback_t *self = argp;
+
+	ENTER;
+	SAVETMPS;
+
+	PUSHMARK(SP);
+	for (i = 0; i < self -> argc; i++) {
+		switch (self -> args_types[i]) {
+			case 'v': break;
+			case 'i': FFI_PUSH_PARAM(int, newSViv)
+			case 'I': FFI_PUSH_PARAM(unsigned int, newSViv)
+			case 'c': FFI_PUSH_PARAM(char, newSViv)
+			case 'C': FFI_PUSH_PARAM(unsigned char, newSViv)
+			case 'f': FFI_PUSH_PARAM(float, newSVuv)
+			case 'd': FFI_PUSH_PARAM(double, newSVuv)
+			case 's': {
+				SV *arg = newSVpv(*(char **) args[i], 0);
+				XPUSHs(sv_2mortal(arg));
+				break;
+			}
+			case 'p': FFI_PUSH_PARAM(void *, PTR_TO_INT)
+		}
+	}
+	PUTBACK;
+
+	retc = call_sv(self -> coderef, G_SCALAR);
+
+	SPAGAIN;
+
+	switch (self -> ret_type) {
+		case 'v': break;
+		case 'i': *(int *) ret = POPi; break;
+		case 'I': *(unsigned int *) ret = POPi; break;
+		case 'z': *(short *) ret = POPi; break;
+		case 'Z': *(unsigned short *) ret = POPi; break;
+		case 'c': *(char *) ret = POPi; break;
+		case 'C': *(unsigned char *) ret = POPi; break;
+		case 'f': *(float *) ret = POPn; break;
+		case 'd': *(double *) ret = POPn; break;
+		case 's': Perl_croak(aTHX_ "Not supported");
+		case 'p': Perl_croak(aTHX_ "Not supported");
+	}
+
+	PUTBACK;
+	FREETMPS;
+	LEAVE;
+}
 
 MODULE = FFI::Raw				PACKAGE = FFI::Raw
 
@@ -61,7 +156,6 @@ new(class, library, function, ret_type, ...)
 	SV *ret_type
 
 	INIT:
-		int i;
 		char *error;
 		ffi_status status;
 
@@ -107,27 +201,7 @@ new(class, library, function, ret_type, ...)
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ error);
 #endif
-		ffi_raw -> ret  = _ffi_raw_get_type(SvIV(ret_type));
-		ffi_raw -> ret_type = SvIV(ret_type);
-		ffi_raw -> argc = items - 4;
-
-		Newx(ffi_raw -> args, ffi_raw -> argc, ffi_type *);
-		Newx(ffi_raw -> args_types, ffi_raw -> argc, char);
-
-		for (i = 4; i < items; i++) {
-			char type = SvIV(ST(i));
-
-			ffi_raw -> args_types[i - 4] = type;
-			ffi_raw -> args[i - 4] = _ffi_raw_get_type(type);
-		}
-
-		status = ffi_prep_cif(
-			&ffi_raw -> cif, FFI_DEFAULT_ABI, ffi_raw -> argc,
-			ffi_raw -> ret, ffi_raw -> args
-		);
-
-		if (status != FFI_OK)
-			Perl_croak(aTHX_ "Error creating calling interface");
+		INIT_FFI_CIF(ffi_raw, 4)
 
 		RETVAL = ffi_raw;
 	OUTPUT:
@@ -140,7 +214,6 @@ new_from_ptr(class, function, ret_type, ...)
 	SV *ret_type
 
 	INIT:
-		int i;
 		char *error;
 		ffi_status status;
 
@@ -149,29 +222,9 @@ new_from_ptr(class, function, ret_type, ...)
 		Newx(ffi_raw, 1, FFI_Raw_t);
 
 		ffi_raw -> handle = NULL;
-		ffi_raw -> fn   = INT_TO_PTR(function);
+		ffi_raw -> fn     = INT_TO_PTR(function);
 
-		ffi_raw -> ret  = _ffi_raw_get_type(SvIV(ret_type));
-		ffi_raw -> ret_type = SvIV(ret_type);
-		ffi_raw -> argc = items - 3;
-
-		Newx(ffi_raw -> args, ffi_raw -> argc, ffi_type *);
-		Newx(ffi_raw -> args_types, ffi_raw -> argc, char);
-
-		for (i = 3; i < items; i++) {
-			char type = SvIV(ST(i));
-
-			ffi_raw -> args_types[i - 3] = type;
-			ffi_raw -> args[i - 3] = _ffi_raw_get_type(type);
-		}
-
-		status = ffi_prep_cif(
-			&ffi_raw -> cif, FFI_DEFAULT_ABI, ffi_raw -> argc,
-			ffi_raw -> ret, ffi_raw -> args
-		);
-
-		if (status != FFI_OK)
-			Perl_croak(aTHX_ "Error creating calling interface");
+		INIT_FFI_CIF(ffi_raw, 3)
 
 		RETVAL = ffi_raw;
 	OUTPUT:
@@ -242,9 +295,22 @@ call(self, ...)
 					break;
 				}
 				case 'p': {
-					if (sv_isobject(arg) && sv_derived_from(
-						      arg, "FFI::Raw::MemPtr"))
+					if (sv_derived_from(
+						arg, "FFI::Raw::MemPtr"
+					)) {
 						arg = SvRV(arg);
+					}
+					if (sv_derived_from(
+						arg, "FFI::Raw::Callback"
+					)) {
+						void **val;
+						Newx(val, 1, void *);
+						FFI_Raw_Callback_t *cb =
+							INT_TO_PTR(SvRV(arg));
+						*val = cb -> fn;
+						values[i] = val;
+						break;
+					}
 
 					FFI_SET_ARG(void *, INT_TO_PTR)
 				}
@@ -330,3 +396,45 @@ DESTROY(self)
 	CODE:
 		void **ptr = self;
 		Safefree(ptr);
+
+MODULE = FFI::Raw				PACKAGE = FFI::Raw::Callback
+
+FFI_Raw_Callback_t *
+new(class, coderef, ret_type, ...)
+	SV *class
+	SV *coderef
+	SV *ret_type
+
+	INIT:
+		int status;
+		FFI_Raw_Callback_t *ffi_raw_cb;
+
+	CODE:
+		Newx(ffi_raw_cb, 1, FFI_Raw_Callback_t);
+
+		ffi_raw_cb -> coderef = coderef;
+		ffi_raw_cb -> closure = ffi_closure_alloc(
+			sizeof(ffi_closure),
+			&ffi_raw_cb -> fn
+		);
+
+		INIT_FFI_CIF(ffi_raw_cb, 3)
+
+		status = ffi_prep_closure_loc(
+			ffi_raw_cb -> closure, &ffi_raw_cb -> cif,
+			_ffi_raw_cb_wrap, ffi_raw_cb,
+			ffi_raw_cb -> fn
+		);
+
+		RETVAL = ffi_raw_cb;
+	OUTPUT:
+		RETVAL
+
+void
+DESTROY(self)
+	FFI_Raw_Callback_t *self
+
+	CODE:
+		Safefree(self -> args_types);
+		Safefree(self -> args);
+		Safefree(self);
