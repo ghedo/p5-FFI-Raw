@@ -4,7 +4,7 @@ use Test::More;
 
 use FFI::Raw;
 
-my $libc = $^O eq 'MSWin32' ? 'msvcrt.dll' : 'libc.so.6';
+my $libc = 'libc.so.6';
 
 my $strstr = FFI::Raw -> new(
 	$libc, 'strstr',

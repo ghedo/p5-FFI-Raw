@@ -4,7 +4,7 @@ use Test::More;
 
 use FFI::Raw;
 
-my $libm = $^O eq 'MSWin32' ? 'msvcrt.dll' : 'libm.so';
+my $libm = 'libm.so';
 
 my $fmax = FFI::Raw -> new(
 	$libm, 'fmax',
