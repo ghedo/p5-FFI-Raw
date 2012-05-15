@@ -99,6 +99,22 @@ Return a FFI::Raw unsigned integer type.
 
 sub uint    { ord 'I' };
 
+=head2 FFI::Raw::short
+
+Return a FFI::Raw short integer type.
+
+=cut
+
+sub short    { ord 'z' };
+
+=head2 FFI::Raw::ushort
+
+Return a FFI::Raw unsigned short integer type.
+
+=cut
+
+sub ushort    { ord 'Z' };
+
 =head2 FFI::Raw::char
 
 Return a FFI::Raw char type.

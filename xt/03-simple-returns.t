@@ -16,7 +16,7 @@ CompileTest::compile($source, $shared);
 my $return_int = FFI::Raw -> new($shared, 'return_int', FFI::Raw::int);
 is($return_int -> call, 101);
 
-my $return_short = FFI::Raw -> new($shared, 'return_short', FFI::Raw::int);
+my $return_short = FFI::Raw -> new($shared, 'return_short', FFI::Raw::short);
 is($return_short -> call, 102);
 
 my $return_char = FFI::Raw -> new($shared, 'return_char', FFI::Raw::char);

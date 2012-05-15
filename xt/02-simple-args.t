@@ -21,12 +21,12 @@ my $take_one_int = FFI::Raw -> new(
 
 my $take_two_shorts = FFI::Raw -> new(
 	$shared, 'take_two_shorts',
-	FFI::Raw::void, FFI::Raw::int, FFI::Raw::int
+	FFI::Raw::void, FFI::Raw::short, FFI::Raw::short
 );
 
 my $take_misc_ints = FFI::Raw -> new(
 	$shared, 'take_misc_ints',
-	FFI::Raw::void, FFI::Raw::int, FFI::Raw::int, FFI::Raw::char
+	FFI::Raw::void, FFI::Raw::int, FFI::Raw::short, FFI::Raw::char
 );
 
 $take_one_int -> call(42);
