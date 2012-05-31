@@ -1,6 +1,6 @@
 #!perl
 
-use lib 'xt/';
+use lib 't';
 
 use Test::More tests => 4;
 
@@ -8,8 +8,8 @@ use FFI::Raw;
 use CompileTest;
 
 my $test   = '04-pointers';
-my $source = "./xt/$test.c";
-my $shared = "./xt/$test.so";
+my $source = "./t/$test.c";
+my $shared = "./t/$test.so";
 
 CompileTest::compile($source, $shared);
 

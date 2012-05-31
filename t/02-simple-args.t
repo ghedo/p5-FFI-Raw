@@ -1,13 +1,13 @@
 #!perl
 
-use lib 'xt/';
+use lib 't';
 
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '02-simple-args';
-my $source = "./xt/$test.c";
-my $shared = "./xt/$test.so";
+my $source = "./t/$test.c";
+my $shared = "./t/$test.so";
 
 print "1..9\n";
 

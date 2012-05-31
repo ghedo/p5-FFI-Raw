@@ -1,3 +1,8 @@
 Raw.bs
 Raw.c
 Raw.o
+t/01-argless.so
+t/02-simple-args.so
+t/03-simple-returns.so
+t/04-pointers.so
+t/05-callbacks.so
