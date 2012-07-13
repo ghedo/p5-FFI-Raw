@@ -35,8 +35,6 @@ also possible to pass a function pointer).
 
 Note that this module has nothing to do with L<FFI>.
 
-B<Attention>: this is experimental code, use at your own risk
-
 =head1 METHODS
 
 =head2 new( $library, $function, $return_type [, $arg_type ...] )
