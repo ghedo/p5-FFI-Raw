@@ -159,21 +159,14 @@ new(class, library, function, ret_type, ...)
 		char *error;
 		ffi_status status;
 
-		STRLEN library_len;
-		const char *library_name;
-
-		STRLEN function_len;
-		const char *function_name;
+		const char *library_name, *function_name;
 
 		FFI_Raw_t *ffi_raw;
 	CODE:
 		Newx(ffi_raw, 1, FFI_Raw_t);
 
-		SvGETMAGIC(library);
-		library_name = SvPV(library, library_len);
-
-		SvGETMAGIC(function);
-		function_name = SvPV(function, function_len);
+		library_name  = SvPV_nolen(library);
+		function_name = SvPV_nolen(function);
 #ifdef _WIN32
 		GetLastError();
 
@@ -204,8 +197,8 @@ new(class, library, function, ret_type, ...)
 		INIT_FFI_CIF(ffi_raw, 4)
 
 		RETVAL = ffi_raw;
-	OUTPUT:
-		RETVAL
+
+	OUTPUT: RETVAL
 
 FFI_Raw_t *
 new_from_ptr(class, function, ret_type, ...)
@@ -227,8 +220,8 @@ new_from_ptr(class, function, ret_type, ...)
 		INIT_FFI_CIF(ffi_raw, 3)
 
 		RETVAL = ffi_raw;
-	OUTPUT:
-		RETVAL
+
+	OUTPUT: RETVAL
 
 void
 DESTROY(self)
@@ -275,7 +268,6 @@ call(self, ...)
 		Newx(values, self -> argc, void *);
 
 		for (i = 0; i < self -> argc; i++) {
-			STRLEN l;
 			SV *arg = ST(i + 1);
 
 			switch (self -> args_types[i]) {
@@ -289,6 +281,7 @@ call(self, ...)
 				case 'f': FFI_SET_ARG(float, SvNV)
 				case 'd': FFI_SET_ARG(double, SvNV)
 				case 's': {
+					STRLEN l;
 					char **val; Newx(val, 1, char *);
 					*val = SvPV(arg, l);
 					values[i] = val;
@@ -355,8 +348,8 @@ call(self, ...)
 		Safefree(values);
 
 		RETVAL = output;
-	OUTPUT:
-		RETVAL
+
+	OUTPUT: RETVAL
 
 MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
 
@@ -373,21 +366,17 @@ new(class, number)
 		Newx(temp, number, char);
 
 		RETVAL = temp;
-	OUTPUT:
-		RETVAL
+
+	OUTPUT: RETVAL
 
 SV *
 tostr(self)
 	FFI_Raw_MemPtr_t *self
 
-	INIT:
-		STRLEN l;
 	CODE:
-		l = strlen((char *) self);
+		RETVAL = newSVpv(self, 0);
 
-		RETVAL = newSVpv(self, l);
-	OUTPUT:
-		RETVAL
+	OUTPUT: RETVAL
 
 void
 DESTROY(self)
@@ -427,8 +416,8 @@ new(class, coderef, ret_type, ...)
 		);
 
 		RETVAL = ffi_raw_cb;
-	OUTPUT:
-		RETVAL
+
+	OUTPUT: RETVAL
 
 void
 DESTROY(self)
