@@ -8,7 +8,7 @@ XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
 =head1 NAME
 
-FFI::Raw - Raw FFI library for Perl
+FFI::Raw - Perl bindings to the portable FFI library (libffi)
 
 =head1 SYNOPSIS
 
