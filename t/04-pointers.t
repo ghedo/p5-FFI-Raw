@@ -2,7 +2,7 @@
 
 use lib 't';
 
-use Test::More tests => 4;
+use Test::More;
 
 use FFI::Raw;
 use CompileTest;
@@ -42,8 +42,10 @@ my $return_int_from_ptr = FFI::Raw -> new(
 my $test_str = 'some string';
 my $test_int = 42;
 
-is($return_str_from_ptr -> call($ptr1), $test_str);
-is($return_int_from_ptr -> call($ptr1), $test_int);
+is $return_str_from_ptr -> call($ptr1), $test_str;
+is $return_int_from_ptr -> call($ptr1), $test_int;
 
-is($return_str_from_ptr -> call($ptr2), $test_str);
-is($return_int_from_ptr -> call($ptr2), $test_int);
+is $return_str_from_ptr -> call($ptr2), $test_str;
+is $return_int_from_ptr -> call($ptr2), $test_int;
+
+done_testing;
