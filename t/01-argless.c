@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 extern void argless() {
-	printf("ok 1 - Called argless function\n");
+	printf("ok - argless\n");
 	fflush(stdout);
 }
