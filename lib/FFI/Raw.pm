@@ -6,6 +6,13 @@ use warnings;
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
+use overload '&{}' => \&_call_deref;
+
+sub _call_deref {
+	my $ffi = shift;
+	return sub { $ffi -> call(@_) };
+}
+
 =head1 NAME
 
 FFI::Raw - Perl bindings to the portable FFI library (libffi)
@@ -57,6 +64,14 @@ of the wanted function.
 Execute the C<FFI::Raw> function C<$self>. This function takes also a variable
 number of arguments, which are passed to the called function. The argument types
 must match the types passed to C<new>.
+
+Simply dereferencing the C<FFI::Raw> object will work as well:
+
+    $cos -> call(2.0);
+
+is the same as:
+
+    $cos -> (2.0);
 
 =head1 SUBROUTINES
 

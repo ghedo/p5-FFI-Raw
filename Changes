@@ -4,6 +4,7 @@ Revision history for FFI-Raw
 
  - Make types constants inlineable by perl (GH#2) (thanks, DOLMEN!)
  - Add a proper Changes file (GH#3)
+ - Overload &{} to make a FFI::Raw object similar to a CODE ref (GH#4)
 
 0.12      2012-08-20 11:34:16 Europe/Rome
 
