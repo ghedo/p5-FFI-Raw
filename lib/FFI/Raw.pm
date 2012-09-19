@@ -65,13 +65,13 @@ Execute the C<FFI::Raw> function C<$self>. This function takes also a variable
 number of arguments, which are passed to the called function. The argument types
 must match the types passed to C<new>.
 
-Simply dereferencing the C<FFI::Raw> object will work as well:
+The C<FFI::Raw> object can be used as a CODE reference as well. Dereferencing
+the object will work just like call():
 
-    $cos -> call(2.0);
+    $cos -> call(2.0); # normal call() call
+    $cos -> (2.0);     # dereference as CODE ref
 
-is the same as:
-
-    $cos -> (2.0);
+This works becasue FFI::Raw overloads the C<&{}> operator.
 
 =head1 SUBROUTINES
 
