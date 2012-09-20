@@ -3,6 +3,7 @@ Revision history for FFI-Raw
 {{$NEXT}}
 
  - Fix build on Windows (GH#5)
+ - Embed libffi sources to ease building
 
 0.13      2012-09-19 18:44:55 Europe/Rome
 

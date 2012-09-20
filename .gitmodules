@@ -1,0 +1,3 @@
+[submodule "xs/libffi"]
+	path = xs/libffi
+	url = git://github.com/atgreen/libffi.git
