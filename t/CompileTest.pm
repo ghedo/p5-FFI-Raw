@@ -5,10 +5,12 @@ use warnings;
 
 use Config;
 
-my $cc = $Config{ccname};
+my $cc = $Config{ccname}.' '.$Config{lddlflags}.' '.$Config{cccdlflags};
 
 sub compile {
 	my ($file, $out) = @_;
 
-	system($cc, '-shared', '-fPIC', '-o', $out, $file);
+	$cc .= " -o $out $file";
+
+	system $cc;
 }
