@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.15      2012-09-30 14:35:47 Europe/Rome
+
  - Fix a number of test failures
 
 0.14      2012-09-22 15:00:05 Europe/Rome
