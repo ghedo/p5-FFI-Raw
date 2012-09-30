@@ -11,7 +11,7 @@ extern char return_char() {
 }
 
 extern double return_double() {
-	return 99.9;
+	return (double) 9.9;
 }
 
 extern float return_float() {
