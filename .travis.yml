@@ -12,7 +12,7 @@ install:
  - dzil listdeps --missing | cpanm
 
 script:
- - dzil test --all
+ - dzil test
 
 notifications:
   recipient:
