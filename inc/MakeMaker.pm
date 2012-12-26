@@ -8,10 +8,13 @@ override _build_MakeFile_PL_template => sub {
 	my ($self) = @_;
 
 	my $template  = <<'TEMPLATE';
-chdir('xs/libffi');
-system('./configure --disable-builddir --with-pic');
-system('make');
-chdir('../..');
+sub MY::postamble {
+  return <<'MAKE_LIBFFI';
+$(MYEXTLIB):
+	cd xs/libffi && ./configure --disable-builddir --with-pic && $(MAKE)
+
+MAKE_LIBFFI
+}
 
 TEMPLATE
 
@@ -23,6 +26,7 @@ override _build_WriteMakefile_args => sub {
 		%{ super() },
 		INC	=> '-I. -Ixs/libffi/include',
 		OBJECT	=> '$(O_FILES) xs/libffi/.libs/libffi.a',
+		MYEXTLIB => 'xs/libffi/.libs/libffi.a',
 	}
 };
 
