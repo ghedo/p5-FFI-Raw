@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Update libffi to 61a0549
+
 0.16      2012-10-02 18:30:12 Europe/Rome
 
  - Fix build on OpenBSD
