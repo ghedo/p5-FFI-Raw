@@ -77,8 +77,7 @@ This works becasue FFI::Raw overloads the C<&{}> operator.
 
 =head2 memptr( $number )
 
-Allocate C<$number> bytes and return a L<FFI::Raw::MemPtr> pointing to the
-allocated memory. This is a shortcut for C<FFI::Raw::MemPtr -> new(...)>.
+Create a L<FFI::Raw::MemPtr>. This is a shortcut for C<FFI::Raw::MemPtr-E<gt>new(...)>.
 
 =cut
 
@@ -86,10 +85,7 @@ sub memptr { FFI::Raw::MemPtr -> new(@_) }
 
 =head2 callback( $coderef, $ret_type [, $arg_type ...] )
 
-Create a callback using code reference C<$coderef> as body and return a
-C<FFI::Raw::Callback> poiting to it. The signature (return and arguments types)
-must also be passed. This can be passed to functions which take a
-C<FFI::Raw::ptr> argument.
+Create a L<FFI::Raw::Callback>. This is a shortcut for C<FFI::Raw::Callback-E<gt>new(...)>.
 
 =cut
 
