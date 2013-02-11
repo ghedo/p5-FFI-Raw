@@ -7,10 +7,26 @@ new(class, number)
 
 	INIT:
 		void *temp;
-		SV *output;
 
 	CODE:
 		Newx(temp, number, char);
+
+		RETVAL = temp;
+
+	OUTPUT: RETVAL
+
+FFI_Raw_MemPtr_t *
+new_from_buf(class, buffer, number)
+	SV *class
+	SV *buffer
+	unsigned int number
+
+	INIT:
+		void *temp;
+
+	CODE:
+		Newx(temp, number, char);
+		Copy(SvPVX(buffer), temp, number, char);
 
 		RETVAL = temp;
 
