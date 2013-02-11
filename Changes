@@ -3,6 +3,8 @@ Revision history for FFI-Raw
 {{$NEXT}}
 
  - Update libffi to 61a0549
+ - Add FFI::Raw::MemPtr -> new_from_buf() method
+ - Improve documentation for FFI::Raw::MemPtr and FFI::Raw::Callback
 
 0.16      2012-10-02 18:30:12 Europe/Rome
 
