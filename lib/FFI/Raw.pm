@@ -77,10 +77,8 @@ This works becasue FFI::Raw overloads the C<&{}> operator.
 
 =head2 memptr( $number )
 
-Allocate C<$number> bytes and return a C<FFI::Raw::MemPtr> pointing to the
-allocated memory. This can be passed to functions which take a C<FFI::Raw::ptr>
-argument. A C<FFI::Raw::MemPtr> can be converted to a Perl string using the
-C<tostr()> method.
+Allocate C<$number> bytes and return a L<FFI::Raw::MemPtr> pointing to the
+allocated memory. This is a shortcut for C<FFI::Raw::MemPtr -> new(...)>.
 
 =cut
 
