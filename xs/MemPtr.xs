@@ -1,34 +1,24 @@
 MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
 
 FFI_Raw_MemPtr_t *
-new(class, number)
+new(class, length)
 	SV *class
-	unsigned int number
-
-	INIT:
-		void *temp;
+	unsigned int length
 
 	CODE:
-		Newx(temp, number, char);
-
-		RETVAL = temp;
+		Newx(RETVAL, length, char);
 
 	OUTPUT: RETVAL
 
 FFI_Raw_MemPtr_t *
-new_from_buf(class, buffer, number)
+new_from_buf(class, buffer, length)
 	SV *class
 	SV *buffer
-	unsigned int number
-
-	INIT:
-		void *temp;
+	unsigned int length
 
 	CODE:
-		Newx(temp, number, char);
-		Copy(SvPVX(buffer), temp, number, char);
-
-		RETVAL = temp;
+		Newx(RETVAL, length, char);
+		Copy(SvPVX(buffer), RETVAL, length, char);
 
 	OUTPUT: RETVAL
 

@@ -14,13 +14,13 @@ functions taking a C<FFI::Raw::ptr> argument.
 
 =head1 METHODS
 
-=head2 new( $number )
+=head2 new( $length )
 
-Allocate a new C<FFI::Raw::MemPtr> of size C<$number> bytes.
+Allocate a new C<FFI::Raw::MemPtr> of size C<$length> bytes.
 
-=head2 new_from_buf( $buffer, $number )
+=head2 new_from_buf( $buffer, $length )
 
-Allocate a new C<FFI::Raw::MemPtr> of size C<$number> bytes and copy C<$buffer>
+Allocate a new C<FFI::Raw::MemPtr> of size C<$length> bytes and copy C<$buffer>
 into it. This can be used, for example, to pass a pointer to a function that
 takes a C struct pointer, by using C<pack()> or the L<Convert::Binary::C> module
 to create the actual struct content.
@@ -53,7 +53,7 @@ It can be called using FFI::Raw as follows:
 
 Which would print C<hello>.
 
-=head2 tostr( [$number] )
+=head2 tostr( [$length] )
 
 Convert a C<FFI::Raw::MemPtr> to a Perl string.
 
