@@ -53,7 +53,7 @@ It can be called using FFI::Raw as follows:
 
 Which would print C<hello>.
 
-=head2 tostr( )
+=head2 tostr( [$number] )
 
 Convert a C<FFI::Raw::MemPtr> to a Perl string.
 

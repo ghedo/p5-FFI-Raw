@@ -33,11 +33,22 @@ new_from_buf(class, buffer, number)
 	OUTPUT: RETVAL
 
 SV *
-tostr(self)
+tostr(self, ...)
 	FFI_Raw_MemPtr_t *self
 
+	PROTOTYPE: $;$
 	CODE:
-		RETVAL = newSVpv(self, 0);
+		switch (items) {
+			case 1:
+				RETVAL = newSVpv(self, 0);
+				break;
+
+			case 2:
+				RETVAL = newSVpv(self, SvUV(ST(1)));
+				break;
+
+			default: Perl_croak(aTHX_ "Wrong number of arguments");
+		}
 
 	OUTPUT: RETVAL
 
