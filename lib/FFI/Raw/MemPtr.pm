@@ -42,7 +42,7 @@ It can be called using FFI::Raw as follows:
     use FFI::Raw;
 
     my $struct = pack('iZ', 42, 'hello');
-    my $arg = FFI::Raw::MemPtr -> new_from_buf($packed, 13);
+    my $arg = FFI::Raw::MemPtr -> new_from_buf($packed, 10);
 
     my $take_one_struct = FFI::Raw -> new(
       $shared, 'take_one_struct',
