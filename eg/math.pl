@@ -1,4 +1,4 @@
-use v5.10;
+use feature 'say';
 
 use strict;
 use warnings;
