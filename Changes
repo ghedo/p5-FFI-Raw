@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Add long and unsigned long ffi types (GH#7) (thanks, @calid!)
+
 0.17      2013-03-02 19:20:35 Europe/Rome
 
  - Update libffi to 61a0549
