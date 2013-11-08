@@ -13,3 +13,4 @@ libtool$
 .*\.status
 .*\.dirstamp
 ffi(config)?.h$
+local.exp
