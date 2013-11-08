@@ -4,6 +4,7 @@ use lib 't';
 
 use FFI::Raw;
 use CompileTest;
+use POSIX;
 
 my $test   = '02-simple-args';
 my $source = "./t/$test.c";
@@ -12,6 +13,20 @@ my $shared = "./t/$test.so";
 CompileTest::compile($source, $shared);
 
 # integers
+my $take_one_long = FFI::Raw -> new(
+    $shared, 'take_one_long',
+    FFI::Raw::void, FFI::Raw::long
+);
+
+$take_one_long -> call(LONG_MIN);
+
+my $take_one_ulong = FFI::Raw -> new(
+    $shared, 'take_one_ulong',
+    FFI::Raw::void, FFI::Raw::ulong
+);
+
+$take_one_ulong -> call(ULONG_MAX);
+
 my $take_one_int = FFI::Raw -> new(
 	$shared, 'take_one_int',
 	FFI::Raw::void, FFI::Raw::int
@@ -60,4 +75,4 @@ my $take_one_string = FFI::Raw -> new(
 $take_one_string -> call('ok - passed a string');
 $take_one_string -> ('ok - passed a string');
 
-print "1..15\n";
+print "1..17\n";

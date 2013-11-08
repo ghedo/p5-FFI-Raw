@@ -6,12 +6,21 @@ use Test::More;
 
 use FFI::Raw;
 use CompileTest;
+use POSIX;
 
 my $test   = '03-simple-returns';
 my $source = "./t/$test.c";
 my $shared = "./t/$test.so";
 
 CompileTest::compile($source, $shared);
+
+my $return_long = FFI::Raw -> new($shared, 'return_long', FFI::Raw::long);
+is $return_long -> call, LONG_MIN;
+is $return_long -> (), LONG_MIN;
+
+my $return_ulong = FFI::Raw -> new($shared, 'return_ulong', FFI::Raw::ulong);
+is $return_ulong -> call, ULONG_MAX;
+is $return_ulong -> (), ULONG_MAX;
 
 my $return_int = FFI::Raw -> new($shared, 'return_int', FFI::Raw::int);
 is $return_int -> call, 101;

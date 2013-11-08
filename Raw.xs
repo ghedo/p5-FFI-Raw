@@ -44,6 +44,8 @@ typedef struct FFI_RAW_CALLBACK {
 void *_ffi_raw_get_type(char type) {
 	switch (type) {
 		case 'v': return &ffi_type_void;
+		case 'l': return &ffi_type_slong;
+		case 'L': return &ffi_type_ulong;
 		case 'i': return &ffi_type_sint32;
 		case 'I': return &ffi_type_uint32;
 		case 'z': return &ffi_type_sint16;
@@ -107,6 +109,8 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 	for (i = 0; i < self -> argc; i++) {
 		switch (self -> args_types[i]) {
 			case 'v': break;
+			case 'l': FFI_PUSH_PARAM(long, newSViv)
+			case 'L': FFI_PUSH_PARAM(unsigned long, newSViv)
 			case 'i': FFI_PUSH_PARAM(int, newSViv)
 			case 'I': FFI_PUSH_PARAM(unsigned int, newSViv)
 			case 'c': FFI_PUSH_PARAM(char, newSViv)
@@ -129,6 +133,8 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 
 	switch (self -> ret_type) {
 		case 'v': break;
+		case 'l': *(long *) ret = POPi; break;
+		case 'L': *(unsigned long *) ret = POPi; break;
 		case 'i': *(int *) ret = POPi; break;
 		case 'I': *(unsigned int *) ret = POPi; break;
 		case 'z': *(short *) ret = POPi; break;
@@ -272,6 +278,8 @@ call(self, ...)
 
 			switch (self -> args_types[i]) {
 				case 'v': break;
+				case 'l': FFI_SET_ARG(long, SvIV)
+				case 'L': FFI_SET_ARG(unsigned long, SvUV)
 				case 'i': FFI_SET_ARG(int, SvIV)
 				case 'I': FFI_SET_ARG(int, SvUV)
 				case 'z': FFI_SET_ARG(short, SvIV)
@@ -320,6 +328,8 @@ call(self, ...)
 				output = newSV(0);
 				break;
 			}
+			case 'l': FFI_CALL(long, newSViv)
+			case 'L': FFI_CALL(unsigned long, newSVuv)
 			case 'i': FFI_CALL(int, newSViv)
 			case 'I': FFI_CALL(int, newSVuv)
 			case 'z': FFI_CALL(short, newSViv)
