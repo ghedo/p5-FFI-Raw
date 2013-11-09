@@ -14,6 +14,21 @@ my $shared = "./t/$test.so";
 
 CompileTest::compile($source, $shared);
 
+use bigint;
+
+my $min_int64  = -2**63;
+my $max_uint64 = 2**64-1;
+
+my $return_int64 = FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64);
+is $return_int64 -> call, $min_int64;
+is $return_int64 -> (), $min_int64;
+
+my $return_uint64 = FFI::Raw -> new($shared, 'return_uint64', FFI::Raw::uint64);
+is $return_uint64 -> call, $max_uint64;
+is $return_uint64 -> (), $max_uint64;
+
+no bigint;
+
 my $return_long = FFI::Raw -> new($shared, 'return_long', FFI::Raw::long);
 is $return_long -> call, LONG_MIN;
 is $return_long -> (), LONG_MIN;

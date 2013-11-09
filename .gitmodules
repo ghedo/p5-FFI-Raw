@@ -1,3 +1,6 @@
 [submodule "xs/libffi"]
 	path = xs/libffi
 	url = git://github.com/atgreen/libffi.git
+[submodule "xs/p5-Math-Int64"]
+	path = xs/p5-Math-Int64
+	url = https://github.com/salva/p5-Math-Int64.git

@@ -13,6 +13,28 @@ my $shared = "./t/$test.so";
 CompileTest::compile($source, $shared);
 
 # integers
+
+use bigint;
+
+my $min_int64  = -2**63;
+my $max_uint64 = 2**64-1;
+
+my $take_one_int64 = FFI::Raw -> new(
+    $shared, 'take_one_int64',
+    FFI::Raw::void, FFI::Raw::int64
+);
+
+$take_one_int64 -> call($min_int64);
+
+my $take_one_uint64 = FFI::Raw -> new(
+    $shared, 'take_one_uint64',
+    FFI::Raw::void, FFI::Raw::uint64
+);
+
+$take_one_uint64 -> call($max_uint64);
+
+no bigint;
+
 my $take_one_long = FFI::Raw -> new(
     $shared, 'take_one_long',
     FFI::Raw::void, FFI::Raw::long
@@ -75,4 +97,4 @@ my $take_one_string = FFI::Raw -> new(
 $take_one_string -> call('ok - passed a string');
 $take_one_string -> ('ok - passed a string');
 
-print "1..17\n";
+print "1..19\n";

@@ -117,6 +117,22 @@ Return a C<FFI::Raw> unsigned long type.
 
 sub ulong ()   { ord 'L' }
 
+=head2 FFI::Raw::int64
+
+Return a C<FFI::Raw> 64 bit integer type.
+
+=cut
+
+sub int64 ()   { ord 'x' }
+
+=head2 FFI::Raw::uint64
+
+Return a C<FFI::Raw> unsigned 64 bit integer type.
+
+=cut
+
+sub uint64 ()   { ord 'X' }
+
 =head2 FFI::Raw::int
 
 Return a C<FFI::Raw> integer type.
