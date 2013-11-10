@@ -4,9 +4,9 @@ use lib 't';
 
 use Test::More;
 
+use POSIX;
 use FFI::Raw;
 use CompileTest;
-use POSIX;
 use Math::BigInt;
 
 my $test   = '03-simple-returns';
@@ -15,8 +15,8 @@ my $shared = "./t/$test.so";
 
 CompileTest::compile($source, $shared);
 
-my $min_int64  = Math::BigInt->new('-9223372036854775808');
-my $max_uint64 = Math::BigInt->new('18446744073709551615');
+my $min_int64  = Math::BigInt -> new('-9223372036854775808');
+my $max_uint64 = Math::BigInt -> new('18446744073709551615');
 
 my $return_int64 = FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64);
 is $return_int64 -> call, $min_int64->bstr();

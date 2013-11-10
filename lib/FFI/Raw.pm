@@ -101,38 +101,6 @@ Return a C<FFI::Raw> void type.
 
 sub void ()  { ord 'v' }
 
-=head2 FFI::Raw::long
-
-Return a C<FFI::Raw> long type.
-
-=cut
-
-sub long ()   { ord 'l' }
-
-=head2 FFI::Raw::ulong
-
-Return a C<FFI::Raw> unsigned long type.
-
-=cut
-
-sub ulong ()   { ord 'L' }
-
-=head2 FFI::Raw::int64
-
-Return a C<FFI::Raw> 64 bit integer type.
-
-=cut
-
-sub int64 ()   { ord 'x' }
-
-=head2 FFI::Raw::uint64
-
-Return a C<FFI::Raw> unsigned 64 bit integer type.
-
-=cut
-
-sub uint64 ()   { ord 'X' }
-
 =head2 FFI::Raw::int
 
 Return a C<FFI::Raw> integer type.
@@ -164,6 +132,38 @@ Return a C<FFI::Raw> unsigned short integer type.
 =cut
 
 sub ushort ()   { ord 'Z' }
+
+=head2 FFI::Raw::long
+
+Return a C<FFI::Raw> long type.
+
+=cut
+
+sub long ()   { ord 'l' }
+
+=head2 FFI::Raw::ulong
+
+Return a C<FFI::Raw> unsigned long type.
+
+=cut
+
+sub ulong ()   { ord 'L' }
+
+=head2 FFI::Raw::int64
+
+Return a C<FFI::Raw> 64 bit integer type.
+
+=cut
+
+sub int64 ()   { ord 'x' }
+
+=head2 FFI::Raw::uint64
+
+Return a C<FFI::Raw> unsigned 64 bit integer type.
+
+=cut
+
+sub uint64 ()   { ord 'X' }
 
 =head2 FFI::Raw::char
 

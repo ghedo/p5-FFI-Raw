@@ -2,9 +2,9 @@
 
 use lib 't';
 
+use POSIX;
 use FFI::Raw;
 use CompileTest;
-use POSIX;
 
 my $test   = '02-simple-args';
 my $source = "./t/$test.c";

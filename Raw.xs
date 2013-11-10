@@ -207,7 +207,7 @@ new(class, library, function, ret_type, ...)
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ error);
 
-		ffi_raw -> fn   = dlsym(ffi_raw -> handle, function_name);
+		ffi_raw -> fn = dlsym(ffi_raw -> handle, function_name);
 
 		if ((error = dlerror()) != NULL)
 			Perl_croak(aTHX_ error);
