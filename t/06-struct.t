@@ -9,13 +9,16 @@ my $test   = '06-struct';
 my $source = "./t/$test.c";
 my $shared = "./t/$test.so";
 
-print "1..5\n";
+print "1..7\n";
 
 CompileTest::compile($source, $shared);
 
-my $packed = pack('iZ', 42, 'hello');
+my $int_arg = 42;
+my $str_arg = "hello";
 
-my $arg = FFI::Raw::MemPtr -> new_from_buf($packed, 10);
+my $packed = pack('ix![p]p', 42, $str_arg);
+
+my $arg = FFI::Raw::MemPtr -> new_from_buf($packed, length $packed);
 
 my $take_one_struct = FFI::Raw -> new(
 	$shared, 'take_one_struct',
@@ -26,7 +29,7 @@ $take_one_struct -> call($arg);
 
 print "ok - survived the call\n";
 
-$arg = FFI::Raw::MemPtr -> new(10);
+$arg = FFI::Raw::MemPtr -> new(length $packed);
 
 my $return_one_struct = FFI::Raw -> new(
 	$shared, 'return_one_struct',
@@ -37,7 +40,7 @@ $return_one_struct -> call($arg);
 
 print "ok - survived the call\n";
 
-my ($int, $str) = unpack('iZ', $arg -> tostr(10));
+my ($int, $str) = unpack('ix![p]p', $arg -> tostr(length $packed));
 
 print "ok - got passed int 42\n" if $int == 42;
-# print "ok - str\n" if $str eq 'hello';
+print "ok - str\n" if $str eq 'hello';
