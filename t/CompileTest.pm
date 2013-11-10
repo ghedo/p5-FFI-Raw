@@ -5,7 +5,7 @@ use warnings;
 
 use Config;
 
-my $cc = $Config{ccname}.' '.$Config{lddlflags}.' '.$Config{cccdlflags};
+my $cc = $Config{ccname}.' '.$Config{lddlflags}.' -g '.$Config{cccdlflags};
 
 sub compile {
 	my ($file, $out) = @_;
