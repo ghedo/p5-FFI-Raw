@@ -7,7 +7,9 @@
 #include <string.h>
 
 #include <ffi.h>
+
 #include "perl_math_int64.h"
+#include "perl_math_int64.c"
 
 #ifdef _WIN32
 # include <windows.h>
@@ -160,6 +162,7 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 }
 
 MODULE = FFI::Raw				PACKAGE = FFI::Raw
+
 BOOT:
 	PERL_MATH_INT64_LOAD_OR_CROAK;
 

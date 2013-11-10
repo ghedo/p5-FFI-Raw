@@ -21,7 +21,7 @@ extern void take_one_ulong(unsigned long x) {
 }
 
 extern void take_one_int64(int64_t x) {
-    if (x == LLONG_MIN)
+	if (x == LLONG_MIN)
 		printf("ok - got passed int64 %lld\n", x);
 	else
 		printf("not ok - got passed int64 %lld\n", x);
@@ -30,7 +30,7 @@ extern void take_one_int64(int64_t x) {
 }
 
 extern void take_one_uint64(uint64_t x) {
-    if (x == ULLONG_MAX)
+	if (x == ULLONG_MAX)
 		printf("ok - got passed uint64 %llu\n", x);
 	else
 		printf("not ok - got passed uint64 %llu\n", x);
