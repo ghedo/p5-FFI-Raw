@@ -8,7 +8,6 @@ perl:
  - "5.18"
 
 install:
- - sudo apt-get install libffi-dev
  - cpanm --notest Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO
  - dzil listdeps --missing | cpanm --notest
 
