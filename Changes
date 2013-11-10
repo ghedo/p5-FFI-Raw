@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Revert libffi update (for some reason it makes the build fail sometimes)
+
 0.18      2013-11-10 18:25:09 Europe/Rome
 
  - Add long and unsigned long ffi types (GH#7) (thanks, @calid!)
