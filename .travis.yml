@@ -9,8 +9,8 @@ perl:
 
 install:
  - sudo apt-get install libffi-dev
- - cpanm Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO Devel::CheckLib
- - dzil listdeps --missing | cpanm
+ - cpanm --notest Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO Devel::CheckLib
+ - dzil listdeps --missing | cpanm --notest
 
 script:
  - dzil test
