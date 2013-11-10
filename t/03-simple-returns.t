@@ -7,6 +7,7 @@ use Test::More;
 use FFI::Raw;
 use CompileTest;
 use POSIX;
+use Math::BigInt;
 
 my $test   = '03-simple-returns';
 my $source = "./t/$test.c";
@@ -14,20 +15,16 @@ my $shared = "./t/$test.so";
 
 CompileTest::compile($source, $shared);
 
-use bigint;
-
-my $min_int64  = -2**63;
-my $max_uint64 = 2**64-1;
+my $min_int64  = Math::BigInt->new('-9223372036854775808');
+my $max_uint64 = Math::BigInt->new('18446744073709551615');
 
 my $return_int64 = FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64);
-is $return_int64 -> call, $min_int64;
-is $return_int64 -> (), $min_int64;
+is $return_int64 -> call, $min_int64->bstr();
+is $return_int64 -> (), $min_int64->bstr();
 
 my $return_uint64 = FFI::Raw -> new($shared, 'return_uint64', FFI::Raw::uint64);
-is $return_uint64 -> call, $max_uint64;
-is $return_uint64 -> (), $max_uint64;
-
-no bigint;
+is $return_uint64 -> call, $max_uint64->bstr();
+is $return_uint64 -> (), $max_uint64->bstr();
 
 my $return_long = FFI::Raw -> new($shared, 'return_long', FFI::Raw::long);
 is $return_long -> call, LONG_MIN;
