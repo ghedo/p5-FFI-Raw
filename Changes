@@ -3,6 +3,7 @@ Revision history for FFI-Raw
 {{$NEXT}}
 
  - Add long and unsigned long ffi types (GH#7) (thanks, @calid!)
+ - Add support for 64 bit ffi integer types (GH#9) (thanks, @calid!)
 
 0.17      2013-03-02 19:20:35 Europe/Rome
 
