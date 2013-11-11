@@ -15,7 +15,7 @@ extern void take_one_struct(struct some_struct *arg) {
 	if (strlen(arg -> some_str) == 5)
 		printf("ok - got passed str of right len\n");
 	else
-		printf("not ok - got passed str of len %d\n", strlen(arg -> some_str));
+		printf("not ok - got passed str of len %zu\n", strlen(arg -> some_str));
 
 	if (strcmp(arg -> some_str, "hello") == 0)
 		printf("ok - got passed str hello\n");

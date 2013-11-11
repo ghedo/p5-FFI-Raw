@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 extern void take_one_long(long x) {
 	if (x == LONG_MIN)
@@ -22,18 +23,18 @@ extern void take_one_ulong(unsigned long x) {
 
 extern void take_one_int64(int64_t x) {
 	if (x == LLONG_MIN)
-		printf("ok - got passed int64 %lld\n", x);
+		printf("ok - got passed int64 %" PRId64 "\n", x);
 	else
-		printf("not ok - got passed int64 %lld\n", x);
+		printf("not ok - got passed int64 %" PRId64 "\n", x);
 
 	fflush(stdout);
 }
 
 extern void take_one_uint64(uint64_t x) {
 	if (x == ULLONG_MAX)
-		printf("ok - got passed uint64 %llu\n", x);
+		printf("ok - got passed uint64 %" PRIu64 "\n", x);
 	else
-		printf("not ok - got passed uint64 %llu\n", x);
+		printf("not ok - got passed uint64 %" PRIu64 "\n", x);
 
 	fflush(stdout);
 }
