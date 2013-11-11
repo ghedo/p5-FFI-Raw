@@ -40,60 +40,60 @@ extern void take_one_uint64(uint64_t x) {
 
 extern void take_one_int(int x) {
 	if (x == 42)
-		printf("ok - got passed int 42\n", x);
+		printf("ok - got passed int 42\n");
 	else
-		printf("not ok - got passed int 42\n", x);
+		printf("not ok - got passed int 42\n");
 
 	fflush(stdout);
 }
 
 extern void take_two_shorts(short x, short y) {
 	if (x == 10)
-		printf("ok - got passed short 10\n", x);
+		printf("ok - got passed short 10\n");
 	else
-		printf("not ok - got passed short 10\n", x);
+		printf("not ok - got passed short 10\n");
 
 	if (y == 20)
-		printf("ok - got passed short 20\n", x);
+		printf("ok - got passed short 20\n");
 	else
-		printf("not ok - got passed short 20\n", x);
+		printf("not ok - got passed short 20\n");
 
 	fflush(stdout);
 }
 
 extern void take_misc_ints(int x, short y, char z) {
 	if (x == 101)
-		printf("ok - got passed int 101\n", x);
+		printf("ok - got passed int 101\n");
 	else
-		printf("not ok - got passed int 101\n", x);
+		printf("not ok - got passed int 101\n");
 
 	if (y == 102)
-		printf("ok - got passed short 102\n", x);
+		printf("ok - got passed short 102\n");
 	else
-		printf("not ok - got passed short 102\n", x);
+		printf("not ok - got passed short 102\n");
 
 	if (z == 103)
-		printf("ok - got passed char 103\n", x);
+		printf("ok - got passed char 103\n");
 	else
-		printf("not ok - got passed char 103\n", x);
+		printf("not ok - got passed char 103\n");
 
 	fflush(stdout);
 }
 
 extern void take_one_double(double x) {
 	if (-6.9 - x < 0.001)
-		printf("ok - got passed double -6.9\n", x);
+		printf("ok - got passed double -6.9\n");
 	else
-		printf("not ok - got passed double -6.9\n", x);
+		printf("not ok - got passed double -6.9\n");
 
 	fflush(stdout);
 }
 
 extern void take_one_float(float x) {
 	if (4.2 - x < 0.001)
-		printf("ok - got passed float 4.2\n", x);
+		printf("ok - got passed float 4.2\n");
 	else
-		printf("not ok - got passed float 4.2\n", x);
+		printf("not ok - got passed float 4.2\n");
 
 	fflush(stdout);
 }
