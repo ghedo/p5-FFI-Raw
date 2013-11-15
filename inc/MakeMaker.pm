@@ -26,6 +26,7 @@ override _build_WriteMakefile_args => sub {
 	return +{
 		%{ super() },
 		INC	=> '-I. -Ixs -Ixs/libffi/include',
+		LIBS	=> '-lpthread',
 		OBJECT	=> '$(O_FILES) xs/libffi/.libs/libffi.a',
 		MYEXTLIB => 'xs/libffi/.libs/libffi.a',
 	}
