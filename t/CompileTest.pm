@@ -7,6 +7,8 @@ use Config;
 
 my $cc = "$Config{ccname} -Wall -g $Config{cccdlflags} $Config{ccdlflags} $Config{lddlflags}";
 
+$cc =~ s/(?<!-Wl,)-fwhole-archive/-Wl,-fwhole-archive/;
+
 sub compile {
 	my ($file, $out) = @_;
 
@@ -14,3 +16,5 @@ sub compile {
 
 	system $cc;
 }
+
+1;
