@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.20      2013-11-18 14:57:38 Europe/Rome
+
  - Fix warnings in the tests
  - Try to fix build failures on *BSD
 
