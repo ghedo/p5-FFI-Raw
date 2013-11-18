@@ -2,6 +2,9 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Fix warnings in the tests
+ - Try to fix build failures on *BSD
+
 0.19      2013-11-10 18:46:54 Europe/Rome
 
  - Revert libffi update (for some reason it makes the build fail sometimes)
