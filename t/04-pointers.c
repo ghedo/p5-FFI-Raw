@@ -31,6 +31,18 @@ extern int return_int_from_ptr(test_ptr_t *ptr) {
 	return ptr -> number;
 }
 
+extern char *return_str_from_ptr_by_ref(test_ptr_t **ptr) {
+	return (*ptr) -> string;
+}
+
+extern int return_int_from_ptr_by_ref(test_ptr_t **ptr) {
+	return (*ptr) -> number;
+}
+
+extern void *return_null(void) {
+	return NULL;
+}
+
 extern int get_test_ptr_size() {
 	return sizeof(test_ptr_t);
 }
