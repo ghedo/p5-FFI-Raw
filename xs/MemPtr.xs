@@ -22,6 +22,24 @@ new_from_buf(class, buffer, length)
 
 	OUTPUT: RETVAL
 
+FFI_Raw_MemPtr_t *
+new_from_ptr(class, pointer)
+	SV *class
+	SV *pointer
+
+	CODE:
+		void *ptr;
+
+		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::MemPtr"))
+			ptr = INT2PTR(void *, SvIV((SV *) SvRV(pointer)));
+		else
+			ptr = SvRV(pointer);
+
+		Newx(RETVAL, sizeof(ptr), char);
+		Copy(&ptr, RETVAL, sizeof(ptr), char);
+
+	OUTPUT: RETVAL
+
 SV *
 tostr(self, ...)
 	FFI_Raw_MemPtr_t *self
@@ -47,5 +65,5 @@ DESTROY(self)
 	FFI_Raw_MemPtr_t *self
 
 	CODE:
-		void **ptr = self;
+		void *ptr = self;
 		Safefree(ptr);

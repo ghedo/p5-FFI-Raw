@@ -53,6 +53,13 @@ It can be called using FFI::Raw as follows:
 
 Which would print C<hello>.
 
+=head2 new_from_ptr( $ptr )
+
+Allocate a new C<FFI::Raw::MemPtr> pointing to the C<$ptr>, which can be either
+a C<FFI::Raw::MemPtr> or a pointer returned by another function.
+
+This is the C<FFI::Raw> equivalent of a pointer to a pointer.
+
 =head2 tostr( [$length] )
 
 Convert a C<FFI::Raw::MemPtr> to a Perl string.
