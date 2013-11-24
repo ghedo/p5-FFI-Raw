@@ -5,7 +5,7 @@ use warnings;
 
 use Config;
 
-my $cc = "$Config{ccname} -Wall -g $Config{cccdlflags} $Config{ccdlflags} $Config{lddlflags}";
+my $cc = "$Config{ccname} -Wall -g -std=gnu99 $Config{cccdlflags} $Config{ccdlflags} $Config{lddlflags}";
 
 $cc =~ s/(-Wl,)?-fwhole-archive//;
 
