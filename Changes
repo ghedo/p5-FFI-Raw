@@ -2,11 +2,14 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Add MemPtr -> new_from_ptr() (GH#12)
+ - Fix a few build failures
+ - Only recommend Math::Int64
+
 0.20      2013-11-18 14:57:38 Europe/Rome
 
  - Fix warnings in the tests
  - Try to fix build failures on *BSD
- - Add MemPtr -> new_from_ptr() (GH#12)
 
 0.19      2013-11-10 18:46:54 Europe/Rome
 
