@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.21      2013-11-24 20:15:32 Europe/Rome
+
  - Add MemPtr -> new_from_ptr() (GH#12)
  - Fix a few build failures
  - Only recommend Math::Int64
