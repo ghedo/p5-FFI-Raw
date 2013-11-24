@@ -164,7 +164,7 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 MODULE = FFI::Raw				PACKAGE = FFI::Raw
 
 BOOT:
-	PERL_MATH_INT64_LOAD_OR_CROAK;
+	PERL_MATH_INT64_LOAD;
 
 FFI_Raw_t *
 new(class, library, function, ret_type, ...)

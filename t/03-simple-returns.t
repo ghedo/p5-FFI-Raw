@@ -5,8 +5,10 @@ use lib 't';
 use Test::More;
 
 use POSIX;
+
 use FFI::Raw;
 use CompileTest;
+
 use Math::BigInt;
 
 my $test   = '03-simple-returns';
@@ -18,6 +20,11 @@ CompileTest::compile($source, $shared);
 my $min_int64  = Math::BigInt -> new('-9223372036854775808');
 my $max_uint64 = Math::BigInt -> new('18446744073709551615');
 
+SKIP: {
+eval "use Math::Int64";
+
+skip 'Math::Int64 required for int64 tests', 4 if $@;
+
 my $return_int64 = FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64);
 is $return_int64 -> call, $min_int64->bstr();
 is $return_int64 -> (), $min_int64->bstr();
@@ -25,6 +32,7 @@ is $return_int64 -> (), $min_int64->bstr();
 my $return_uint64 = FFI::Raw -> new($shared, 'return_uint64', FFI::Raw::uint64);
 is $return_uint64 -> call, $max_uint64->bstr();
 is $return_uint64 -> (), $max_uint64->bstr();
+};
 
 my $return_long = FFI::Raw -> new($shared, 'return_long', FFI::Raw::long);
 is $return_long -> call, LONG_MIN;

@@ -40,7 +40,7 @@ int
 perl_math_int64_load(int required_version) {
     dTHX;
     SV **svp;
-    eval_pv("require Math::Int64", TRUE);
+    eval_pv("require Math::Int64", FALSE);
     if (SvTRUE(ERRSV)) return 0;
 
    math_int64_c_api_hash = get_hv("Math::Int64::C_API", 0);

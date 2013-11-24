@@ -3,12 +3,15 @@
 use lib 't';
 
 use POSIX;
+
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '02-simple-args';
 my $source = "./t/$test.c";
 my $shared = "./t/$test.so";
+
+my $tests = 19;
 
 CompileTest::compile($source, $shared);
 
@@ -18,6 +21,15 @@ use bigint;
 
 my $min_int64  = -2**63;
 my $max_uint64 = 2**64-1;
+
+SKIP: {
+eval "use Math::Int64";
+
+if ($@) {
+	print "Math::Int64 required for int64 tests\n";
+	$tests -= 2;
+	last SKIP;
+}
 
 my $take_one_int64 = FFI::Raw -> new(
 	$shared, 'take_one_int64',
@@ -32,6 +44,7 @@ my $take_one_uint64 = FFI::Raw -> new(
 );
 
 $take_one_uint64 -> call($max_uint64);
+}
 
 no bigint;
 
@@ -97,4 +110,4 @@ my $take_one_string = FFI::Raw -> new(
 $take_one_string -> call('ok - passed a string');
 $take_one_string -> ('ok - passed a string');
 
-print "1..19\n";
+print "1..$tests\n";
