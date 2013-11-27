@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Correctly handle callback coderef refcount (GH#14) (thanks, @plicease!)
+
 0.21      2013-11-24 20:15:32 Europe/Rome
 
  - Add MemPtr -> new_from_ptr() (GH#12)
