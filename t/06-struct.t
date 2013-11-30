@@ -2,12 +2,14 @@
 
 use lib 't';
 
+use Config;
+
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '06-struct';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.so";
+my $shared = "./t/$test.$Config{dlext}";
 
 print "1..7\n";
 

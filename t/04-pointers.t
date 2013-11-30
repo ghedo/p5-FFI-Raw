@@ -4,12 +4,14 @@ use lib 't';
 
 use Test::More;
 
+use Config;
+
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '04-pointers';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.so";
+my $shared = "./t/$test.$Config{dlext}";
 
 CompileTest::compile($source, $shared);
 

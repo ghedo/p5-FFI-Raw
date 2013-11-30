@@ -5,6 +5,7 @@ use lib 't';
 use Test::More;
 
 use POSIX;
+use Config;
 
 use FFI::Raw;
 use CompileTest;
@@ -13,7 +14,7 @@ use Math::BigInt;
 
 my $test   = '03-simple-returns';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.so";
+my $shared = "./t/$test.$Config{dlext}";
 
 CompileTest::compile($source, $shared);
 

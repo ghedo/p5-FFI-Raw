@@ -3,13 +3,14 @@
 use lib 't';
 
 use POSIX;
+use Config;
 
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '02-simple-args';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.so";
+my $shared = "./t/$test.$Config{dlext}";
 
 my $tests = 19;
 
