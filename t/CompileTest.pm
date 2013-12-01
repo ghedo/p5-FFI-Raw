@@ -3,19 +3,17 @@ package CompileTest;
 use strict;
 use warnings;
 
-use Test::More;
-
-use Config;
-
-my $cc = "$Config{ccname}  -Wall -g -std=gnu99  $Config{cccdlflags}  $Config{lddlflags}";
+use ExtUtils::CBuilder;
 
 sub compile {
-	my ($file, $out) = @_;
+	my ($src_file) = @_;
 
-	$cc .= "  -o $out $file";
+	my $b = ExtUtils::CBuilder -> new;
 
-	diag $cc;
-	system $cc;
+	my $obj_file = $b -> compile(source => $src_file);
+	my $lib_file = $b -> link(objects => $obj_file);
+
+	return $lib_file;
 }
 
 1;

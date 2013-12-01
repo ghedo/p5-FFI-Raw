@@ -2,18 +2,12 @@
 
 use lib 't';
 
-use Config;
-
 use FFI::Raw;
 use CompileTest;
 
 my $test   = '05-callbacks';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.$Config{dlext}";
-
-print "1..9\n";
-
-CompileTest::compile($source, $shared);
+my $shared = CompileTest::compile($source);
 
 my $take_one_int_callback = FFI::Raw -> new(
 	$shared, 'take_one_int_callback',
@@ -69,3 +63,5 @@ print "ok - survived the call (anonymous subroutine)\n";
 
 print ($check1 == (42 + 15) ? "ok\n" : "not ok - returned $check1\n");
 print ($check2 == (42 + 15) ? "ok\n" : "not ok - returned $check2\n");
+
+print "1..9\n";

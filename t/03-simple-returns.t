@@ -5,7 +5,6 @@ use lib 't';
 use Test::More;
 
 use POSIX;
-use Config;
 
 use FFI::Raw;
 use CompileTest;
@@ -14,9 +13,7 @@ use Math::BigInt;
 
 my $test   = '03-simple-returns';
 my $source = "./t/$test.c";
-my $shared = "./t/$test.$Config{dlext}";
-
-CompileTest::compile($source, $shared);
+my $shared = CompileTest::compile($source);
 
 my $min_int64  = Math::BigInt -> new('-9223372036854775808');
 my $max_uint64 = Math::BigInt -> new('18446744073709551615');
