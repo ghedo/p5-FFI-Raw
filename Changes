@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.22      2013-12-01 17:51:57 Europe/Rome
+
  - Correctly handle callback coderef refcount (GH#14) (thanks, @plicease!)
  - Use ExtUtils::CBuilder for compiling C tests
 
