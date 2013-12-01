@@ -48,7 +48,7 @@ my $zmq_msg_data = FFI::Raw -> new(
 my $ctx = $zmq_init -> call(1);
 
 # init zmq socket and bind
-my $sock = $zmq_socket -> call($ctx, 3); # 4 is ZMQ_REQ
+my $sock = $zmq_socket -> call($ctx, 3); # 3 is ZMQ_REQ
 $zmq_connect -> call($sock, 'tcp://127.0.0.1:6666');
 
 # send message to server
