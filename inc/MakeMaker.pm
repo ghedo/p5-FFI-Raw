@@ -11,7 +11,7 @@ override _build_MakeFile_PL_template => sub {
 sub MY::postamble {
   return <<'MAKE_LIBFFI';
 $(MYEXTLIB):
-	cd xs/libffi && ./configure --disable-builddir --with-pic && $(MAKE)
+	cd xs/libffi && ./configure MAKEINFO=true --disable-builddir --with-pic && $(MAKE)
 
 MAKE_LIBFFI
 }
