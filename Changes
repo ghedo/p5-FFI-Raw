@@ -2,6 +2,10 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Update libffi to 356b2cb
+ - Fix some examples
+ - (Try to )Fix a few build failures (again)
+
 0.22      2013-12-01 17:51:57 Europe/Rome
 
  - Correctly handle callback coderef refcount (GH#14) (thanks, @plicease!)
