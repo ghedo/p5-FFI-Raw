@@ -13,6 +13,8 @@ sub MY::postamble {
 $(MYEXTLIB):
 	cd xs/libffi && ./configure MAKEINFO=true --disable-builddir --with-pic && $(MAKE)
 
+.NOTPARALLEL:
+
 MAKE_LIBFFI
 }
 
