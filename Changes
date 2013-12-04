@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.23      2013-12-04 20:45:24 Europe/Rome
+
  - Update libffi to 356b2cb
  - Fix some examples
  - (Try to )Fix a few build failures (again)
