@@ -8,6 +8,10 @@
 
 #include <ffi.h>
 
+#ifdef __MINGW32__
+#include <stdint.h>
+#endif
+
 #include "perl_math_int64.h"
 #include "perl_math_int64.c"
 
