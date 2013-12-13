@@ -8,6 +8,10 @@
 
 #include <ffi.h>
 
+#ifdef __MINGW32__
+#include <stdint.h>
+#endif
+
 #include "perl_math_int64.h"
 #include "perl_math_int64.c"
 
@@ -189,6 +193,9 @@ new(class, library, function, ret_type, ...)
 		GetLastError();
 
 		ffi_raw -> handle = LoadLibrary(library_name);
+		
+		if(ffi_raw->handle == NULL)
+			Perl_croak(aTHX_ "library not found");
 
 		/*if ((error = GetLastError()) != NULL)
 			Perl_croak(aTHX_ error);*/
@@ -196,6 +203,9 @@ new(class, library, function, ret_type, ...)
 		ffi_raw -> fn = GetProcAddress(
 			ffi_raw -> handle, function_name
 		);
+		
+		if(ffi_raw -> fn == NULL)
+			Perl_croak(aTHX_ "function not found");
 
 		/*if ((error = GetLastError()) != NULL)
 			Perl_croak(aTHX_ error);*/
