@@ -20,12 +20,13 @@ sub compile {
 		return $lib_file;
 	} else {
 		my $name = $src_file;
-		$name =~ s/-/_/g;
 		$name =~ s/\.c$//;
 		$name =~ s/^.*(\/|\\)//;
-		print "# name = $name\n";
-		my $lib_file = $b -> link(objects => $obj_file, module_name => $name);
-		return $lib_file;
+		require Alien::o2dll;
+		Alien::o2dll::o2dll(-o => "$name.dll", $obj_file);
+		rename "$name.dll", "t/$name.dll";
+		rename "$name.dll.a", "t/$name.dll.a";
+		"t/$name.dll";
 	}
 }
 
