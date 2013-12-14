@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Build libffi on MSWin32 (GH#15) (thanks, @plicease!)
+
 0.23      2013-12-04 20:45:24 Europe/Rome
 
  - Update libffi to 356b2cb
