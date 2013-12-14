@@ -8,6 +8,7 @@ Raw.o
 .*\.lo
 .*\.Plo
 .*\.pc$
+.*\.info
 stamp-h1
 libtool$
 .*\.status
