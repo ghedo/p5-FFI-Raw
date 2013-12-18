@@ -314,8 +314,15 @@ call(self, ...)
 				case 'd': FFI_SET_ARG(double, SvNV)
 				case 's': {
 					STRLEN l;
-					char **val; Newx(val, 1, char *);
-					*val = SvPV(arg, l);
+					char **val;
+
+					Newx(val, 1, char *);
+
+					if (SvOK(arg))
+						*val = SvPV(arg, l);
+					else
+						*val = NULL;
+
 					values[i] = val;
 					break;
 				}
