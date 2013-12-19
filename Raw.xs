@@ -327,24 +327,29 @@ call(self, ...)
 					break;
 				}
 				case 'p': {
+					void **val;
+
+					Newx(val, 1, void *);
+
 					if (sv_derived_from(
 						arg, "FFI::Raw::MemPtr"
 					)) {
 						arg = SvRV(arg);
 					}
+
 					if (sv_derived_from(
 						arg, "FFI::Raw::Callback"
 					)) {
-						void **val;
-						Newx(val, 1, void *);
 						FFI_Raw_Callback_t *cb =
 							INT_TO_PTR(SvRV(arg));
 						*val = cb -> fn;
-						values[i] = val;
-						break;
-					}
+					} else if (SvOK(arg))
+						*val = INT_TO_PTR(arg);
+					else
+						*val = NULL;
 
-					FFI_SET_ARG(void *, INT_TO_PTR)
+					values[i] = val;
+					break;
 				}
 			}
 		}
@@ -382,7 +387,20 @@ call(self, ...)
 				output = newSVpv(result, 0);
 				break;
 			}
-			case 'p': FFI_CALL(void *, PTR_TO_INT)
+			case 'p': {
+				void *result;
+
+				ffi_call(
+					&self -> cif, self -> fn,
+					&result, values
+				);
+
+				if (result == NULL)
+					output = &PL_sv_undef;
+				else
+					output = PTR_TO_INT(result);
+				break;
+			}
 		}
 
 		for (i = 0; i < self -> argc; i++)
