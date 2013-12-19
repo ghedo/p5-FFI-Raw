@@ -9,15 +9,38 @@ my $test   = '07-null';
 my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
-my $return_undef  = FFI::Raw -> new($shared, 'return_undef', FFI::Raw::str);
-my $pass_in_undef = FFI::Raw -> new($shared, 'pass_in_undef', FFI::Raw::void, FFI::Raw::str);
+$| = 1;
 
-$pass_in_undef -> call(undef);
+my $return_undef_str  = FFI::Raw -> new(
+	$shared, 'return_undef_str', FFI::Raw::str
+);
 
-unless (defined $return_undef -> call) {
+my $pass_in_undef_str = FFI::Raw -> new(
+	$shared, 'pass_in_undef_str', FFI::Raw::void, FFI::Raw::str
+);
+
+$pass_in_undef_str -> call(undef);
+
+unless (defined $return_undef_str -> call) {
 	print "ok 2 - returned undef\n";
 } else {
 	print "not ok 2 - returned undef\n";
 }
 
-print "1..2\n";
+my $return_undef_ptr  = FFI::Raw -> new(
+	$shared, 'return_undef_ptr', FFI::Raw::ptr
+);
+
+my $pass_in_undef_ptr = FFI::Raw -> new(
+	$shared, 'pass_in_undef_ptr', FFI::Raw::void, FFI::Raw::ptr
+);
+
+$pass_in_undef_ptr -> call(undef);
+
+unless (defined $return_undef_ptr -> call) {
+	print "ok 4 - returned undef\n";
+} else {
+	print "not ok 4 - returned undef\n";
+}
+
+print "1..4\n";

@@ -78,6 +78,6 @@ is $return_int_from_ptr_by_ref -> call($ptrptr2), $test_int;
 is $return_int_from_ptr_by_ref -> ($ptrptr2), $test_int;
 
 my $return_null = FFI::Raw -> new($shared, 'return_null', FFI::Raw::ptr);
-is $return_null -> call, 0;
+is $return_null -> call, undef;
 
 done_testing;
