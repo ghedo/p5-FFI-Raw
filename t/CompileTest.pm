@@ -4,6 +4,8 @@ use strict;
 use warnings;
 
 use ExtUtils::CBuilder;
+use Config;
+use Text::ParseWords qw( shellwords );
 
 sub compile {
 	my ($src_file) = @_;
@@ -19,16 +21,13 @@ sub compile {
 		my $lib_file = $b -> link(objects => $obj_file);
 		return $lib_file;
 	} else {
-		require Alien::o2dll;
-
 		my $name = $src_file;
 		$name =~ s/\.c$//;
 		$name =~ s/^.*(\/|\\)//;
 
-		Alien::o2dll::o2dll(-o => "$name.dll", $obj_file);
-
-		rename "$name.dll", "t/$name.dll";
-		rename "$name.dll.a", "t/$name.dll.a";
+		my $lddlflags = $Config{lddlflags};
+		$lddlflags =~ s{\\}{/}g;
+		system $Config{cc}, shellwords($lddlflags), -o => "t/$name.dll", "-Wl,--export-all-symbols", $obj_file;
 
 		return "t/$name.dll";
 	}
