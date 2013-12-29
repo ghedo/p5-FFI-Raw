@@ -3,7 +3,9 @@ package CompileTest;
 use strict;
 use warnings;
 
+use Config;
 use ExtUtils::CBuilder;
+use Text::ParseWords qw(shellwords);
 
 sub compile {
 	my ($src_file) = @_;
@@ -15,23 +17,17 @@ sub compile {
 		extra_compiler_flags => '-std=gnu99'
 	);
 
-	if ($^O ne 'MSWin32') {
-		my $lib_file = $b -> link(objects => $obj_file);
-		return $lib_file;
-	} else {
-		require Alien::o2dll;
+	return $b -> link(objects => $obj_file)
+		unless ($^O eq 'MSWin32');
 
-		my $name = $src_file;
-		$name =~ s/\.c$//;
-		$name =~ s/^.*(\/|\\)//;
+	$src_file =~ s/\.c$//;
+	$src_file =~ s/^.*(\/|\\)//;
 
-		Alien::o2dll::o2dll(-o => "$name.dll", $obj_file);
+	my $lddlflags = $Config{lddlflags};
+	$lddlflags =~ s{\\}{/}g;
+	system $Config{cc}, shellwords($lddlflags), -o => "t/$src_file.dll", "-Wl,--export-all-symbols", $obj_file;
 
-		rename "$name.dll", "t/$name.dll";
-		rename "$name.dll.a", "t/$name.dll.a";
-
-		return "t/$name.dll";
-	}
+	return "t/$src_file.dll";
 }
 
 1;
