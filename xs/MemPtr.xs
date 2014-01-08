@@ -27,9 +27,10 @@ new_from_ptr(class, pointer)
 	SV *class
 	SV *pointer
 
-	CODE:
+	PREINIT:
 		void *ptr;
 
+	CODE:
 		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::MemPtr"))
 			ptr = INT2PTR(void *, SvIV((SV *) SvRV(pointer)));
 		else
@@ -45,6 +46,7 @@ tostr(self, ...)
 	FFI_Raw_MemPtr_t *self
 
 	PROTOTYPE: $;$
+
 	CODE:
 		switch (items) {
 			case 1:
@@ -64,6 +66,9 @@ void
 DESTROY(self)
 	FFI_Raw_MemPtr_t *self
 
+	PREINIT:
+		void *ptr;
+
 	CODE:
-		void *ptr = self;
+		ptr = self;
 		Safefree(ptr);

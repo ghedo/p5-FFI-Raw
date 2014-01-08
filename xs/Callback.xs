@@ -6,14 +6,16 @@ new(class, coderef, ret_type, ...)
 	SV *coderef
 	SV *ret_type
 
-	INIT:
+	PREINIT:
 		int status;
+
 		FFI_Raw_Callback_t *ffi_raw_cb;
 
 	CODE:
 		Newx(ffi_raw_cb, 1, FFI_Raw_Callback_t);
 
 		ffi_raw_cb -> coderef = SvREFCNT_inc(coderef);
+
 		ffi_raw_cb -> closure = ffi_closure_alloc(
 			sizeof(ffi_closure),
 			&ffi_raw_cb -> fn
@@ -36,7 +38,8 @@ DESTROY(self)
 	FFI_Raw_Callback_t *self
 
 	CODE:
-	        SvREFCNT_dec(self -> coderef);
+		SvREFCNT_dec(self -> coderef);
+
 		Safefree(self -> args_types);
 		Safefree(self -> args);
 		Safefree(self);
