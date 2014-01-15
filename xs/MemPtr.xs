@@ -54,7 +54,7 @@ tostr(self, ...)
 				break;
 
 			case 2:
-				RETVAL = newSVpv(self, SvUV(ST(1)));
+				RETVAL = newSVpvn(self, SvUV(ST(1)));
 				break;
 
 			default: Perl_croak(aTHX_ "Wrong number of arguments");
