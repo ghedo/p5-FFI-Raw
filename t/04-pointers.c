@@ -1,12 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ffi_test.h"
+
 typedef struct POINTER {
 	char *string;
 	int   number;
 } test_ptr_t;
 
-extern void take_one_pointer(test_ptr_t *ptr) {
+extern EXPORT void take_one_pointer(test_ptr_t *ptr) {
 	char *string = "some string";
 
 	ptr -> string = malloc(strlen(string) + 1);
@@ -15,7 +17,7 @@ extern void take_one_pointer(test_ptr_t *ptr) {
 	ptr -> number = 42;
 }
 
-extern test_ptr_t *return_pointer() {
+extern EXPORT test_ptr_t *return_pointer() {
 	test_ptr_t *ptr = malloc(sizeof(test_ptr_t));
 
 	take_one_pointer(ptr);
@@ -23,26 +25,26 @@ extern test_ptr_t *return_pointer() {
 	return ptr;
 }
 
-extern char *return_str_from_ptr(test_ptr_t *ptr) {
+extern EXPORT char *return_str_from_ptr(test_ptr_t *ptr) {
 	return ptr -> string;
 }
 
-extern int return_int_from_ptr(test_ptr_t *ptr) {
+extern EXPORT int return_int_from_ptr(test_ptr_t *ptr) {
 	return ptr -> number;
 }
 
-extern char *return_str_from_ptr_by_ref(test_ptr_t **ptr) {
+extern EXPORT char *return_str_from_ptr_by_ref(test_ptr_t **ptr) {
 	return (*ptr) -> string;
 }
 
-extern int return_int_from_ptr_by_ref(test_ptr_t **ptr) {
+extern EXPORT int return_int_from_ptr_by_ref(test_ptr_t **ptr) {
 	return (*ptr) -> number;
 }
 
-extern void *return_null(void) {
+extern EXPORT void *return_null(void) {
 	return NULL;
 }
 
-extern int get_test_ptr_size() {
+extern EXPORT int get_test_ptr_size() {
 	return sizeof(test_ptr_t);
 }
