@@ -12,6 +12,12 @@
 # include <stdint.h>
 #endif
 
+#ifdef _MSC_VER
+#include <stdlib.h>
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#endif
+
 #include "perl_math_int64.h"
 #include "perl_math_int64.c"
 
