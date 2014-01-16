@@ -1,6 +1,12 @@
 #include <stdio.h>
 
-void pass_in_undef_str(const char *value) {
+#ifdef _MSC_VER
+# define EXPORT __declspec(dllexport)
+#else
+# define EXPORT 
+#endif
+
+extern EXPORT void pass_in_undef_str(const char *value) {
 	if (value == NULL)
 		printf("ok 1 - value == NULL\n");
 	else
@@ -9,11 +15,11 @@ void pass_in_undef_str(const char *value) {
 	fflush(stdout);
 }
 
-const char *return_undef_str(void) {
+extern EXPORT const char *return_undef_str(void) {
 	return NULL;
 }
 
-void pass_in_undef_ptr(const void *value) {
+extern EXPORT void pass_in_undef_ptr(const void *value) {
 	if (value == NULL)
 		printf("ok 3 - value == NULL\n");
 	else
@@ -22,6 +28,6 @@ void pass_in_undef_ptr(const void *value) {
 	fflush(stdout);
 }
 
-const void *return_undef_ptr(void) {
+extern EXPORT const void *return_undef_ptr(void) {
 	return NULL;
 }

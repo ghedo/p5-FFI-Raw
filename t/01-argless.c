@@ -1,8 +1,12 @@
 #include <stdio.h>
 
-extern void argless() {
+#ifdef _MSC_VER
+# define EXPORT __declspec(dllexport)
+#else
+# define EXPORT 
+#endif
+
+extern EXPORT void argless() {
 	printf("ok - argless\n");
 	fflush(stdout);
 }
-
-void boot_01_argless() {}

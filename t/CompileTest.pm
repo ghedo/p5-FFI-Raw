@@ -23,9 +23,15 @@ sub compile {
 	$src_file =~ s/\.c$//;
 	$src_file =~ s/^.*(\/|\\)//;
 
-	my $lddlflags = $Config{lddlflags};
-	$lddlflags =~ s{\\}{/}g;
-	system $Config{cc}, shellwords($lddlflags), -o => "t/$src_file.dll", "-Wl,--export-all-symbols", $obj_file;
+	if($Config{cc} !~ /cl(\.exe)?$/) {
+		my $lddlflags = $Config{lddlflags};
+		$lddlflags =~ s{\\}{/}g;
+		system $Config{cc}, shellwords($lddlflags), -o => "t/$src_file.dll", "-Wl,--export-all-symbols", $obj_file;
+	} else {
+		my @cmd = ($Config{cc}, $obj_file, "/link", "/dll", "/out:t/$src_file.dll");
+		print "% @cmd\n";
+		system @cmd;
+	}
 
 	return "t/$src_file.dll";
 }
