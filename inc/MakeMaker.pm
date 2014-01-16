@@ -39,6 +39,7 @@ if($^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/) {
   for(@WriteMakefileArgs{'MYEXTLIB','OBJECT'}) {
     s/libffi.a/libffi.lib/;
   }
+  $WriteMakefileArgs{CCFLAGS} = "$Config::Config{ccflags} -DFFI_BUILDING",
 }
 
 EXTRA
