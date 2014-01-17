@@ -425,6 +425,5 @@ DESTROY(self)
 		Safefree(self -> args);
 		Safefree(self);
 
-INCLUDE: xs/Ptr.xs
 INCLUDE: xs/MemPtr.xs
 INCLUDE: xs/Callback.xs
