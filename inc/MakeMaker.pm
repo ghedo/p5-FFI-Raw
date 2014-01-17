@@ -13,12 +13,7 @@ use Config;
 
 sub MY::postamble {
   if ($^O eq 'MSWin32') {
-    my $configure_args = 'MAKEILFO=true --disable-builddir --with-pic';
-
-    $configure_args .= ' --build=x86_64-pc-mingw64'
-      if $Config{archname} =~ /^MSWin32-x64/;
-
-    return "\t$^X -MAlien::MSYS=msys_run -e \"chdir 'xs/libffi'; msys_run 'sh configure $configure_args'; msys_run 'make'\"\n\n";
+    return "\t$^X -MAlien::MSYS=msys_run -Minc::MSYSConfigure -e \"configure(); msys_run 'make'\"\n\n";
   }
 
   return <<'MAKE_LIBFFI';
@@ -33,6 +28,21 @@ MAKE_LIBFFI
 TEMPLATE
 
 	return $template.super();
+};
+
+override _build_WriteMakefile_dump => sub {
+	my ($self) = @_;
+	
+	return super() . <<'EXTRA';
+
+if($^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/) {
+  for(@WriteMakefileArgs{'MYEXTLIB','OBJECT'}) {
+    s/libffi.a/libffi.lib/;
+  }
+  $WriteMakefileArgs{CCFLAGS} = "$Config::Config{ccflags} -DFFI_BUILDING",
+}
+
+EXTRA
 };
 
 my $ccflags = $Config::Config{ccflags} || '';

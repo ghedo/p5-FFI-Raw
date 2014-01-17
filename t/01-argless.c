@@ -1,8 +1,7 @@
 #include <stdio.h>
+#include "ffi_test.h"
 
-extern void argless() {
+extern EXPORT void argless() {
 	printf("ok - argless\n");
 	fflush(stdout);
 }
-
-void boot_01_argless() {}
