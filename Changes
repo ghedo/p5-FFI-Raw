@@ -5,6 +5,8 @@ Revision history for FFI-Raw
  - Fix build under MSWin32 64-bit (GH#17) (thanks, @plicease!)
  - Support explicit string length of 0 in MemPtr -> tostr()
    (GH#18) (thanks, @klaus)
+ - Add FFI::Raw::Ptr base class for pointer objects
+   (GH#20) (GH#22) (thanks, @plicease!)
 
 0.24      2013-12-19 16:44:50 Europe/Rome
 
