@@ -71,7 +71,7 @@ the object will work just like call():
     $cos -> call(2.0); # normal call() call
     $cos -> (2.0);     # dereference as CODE ref
 
-This works becasue FFI::Raw overloads the C<&{}> operator.
+This works because FFI::Raw overloads the C<&{}> operator.
 
 =head1 SUBROUTINES
 
