@@ -17,7 +17,7 @@ sub compile {
 	my $obj_file = $b -> compile(
 		source => $src_file,
 		extra_compiler_flags => $^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/ ? '' : '-std=gnu99',
-		include_dirs => $FindBin::Bin,
+		include_dirs => [$FindBin::Bin],
 	);
 
 	return $b -> link(objects => $obj_file)
