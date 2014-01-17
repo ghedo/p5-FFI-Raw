@@ -2,13 +2,14 @@ package FFI::Raw;
 
 use strict;
 use warnings;
+use FFI::Raw::MemPtr;
 
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
-use overload '&{}' => \&_call_deref;
+use overload '&{}' => \&coderef;
 
-sub _call_deref {
+sub coderef {
 	my $ffi = shift;
 	return sub { $ffi -> call(@_) };
 }
