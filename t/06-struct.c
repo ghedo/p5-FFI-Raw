@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
-#ifdef _MSC_VER
-# define EXPORT __declspec(dllexport)
-#else
-# define EXPORT 
-#endif
+#include "ffi_test.h"
 
 struct some_struct {
 	int   some_int;

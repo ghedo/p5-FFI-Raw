@@ -2,12 +2,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <inttypes.h>
-
-#ifdef _MSC_VER
-# define EXPORT __declspec(dllexport)
-#else
-# define EXPORT 
-#endif
+#include "ffi_test.h"
 
 extern EXPORT void take_one_long(long x) {
 	if (x == LONG_MIN)

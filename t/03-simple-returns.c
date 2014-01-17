@@ -1,11 +1,6 @@
 #include <limits.h>
 #include <stdint.h>
-
-#ifdef _MSC_VER
-# define EXPORT __declspec(dllexport)
-#else
-# define EXPORT 
-#endif
+#include "ffi_test.h"
 
 extern EXPORT long return_long() {
 	return LONG_MIN;

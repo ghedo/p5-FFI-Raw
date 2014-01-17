@@ -1,10 +1,5 @@
 #include <stdio.h>
-
-#ifdef _MSC_VER
-# define EXPORT __declspec(dllexport)
-#else
-# define EXPORT 
-#endif
+#include "ffi_test.h"
 
 extern EXPORT void pass_in_undef_str(const char *value) {
 	if (value == NULL)
