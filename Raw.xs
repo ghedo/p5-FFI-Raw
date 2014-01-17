@@ -328,7 +328,7 @@ call(self, ...)
 					Newx(val, 1, void *);
 
 					if (sv_derived_from(
-						arg, "FFI::Raw::MemPtr"
+						arg, "FFI::Raw::Ptr"
 					)) {
 						arg = SvRV(arg);
 					}

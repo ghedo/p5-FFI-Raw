@@ -1,5 +1,11 @@
 MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
 
+BOOT:
+{
+	AV *isa = perl_get_av("FFI::Raw::MemPtr::ISA",1);
+	av_push(isa, newSVpv("FFI::Raw::Ptr", 0));
+}
+
 FFI_Raw_MemPtr_t *
 new(class, length)
 	SV *class
@@ -31,7 +37,7 @@ new_from_ptr(class, pointer)
 		void *ptr;
 
 	CODE:
-		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::MemPtr"))
+		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::Ptr"))
 			ptr = INT2PTR(void *, SvIV((SV *) SvRV(pointer)));
 		else
 			ptr = SvRV(pointer);
