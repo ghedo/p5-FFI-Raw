@@ -31,7 +31,7 @@ new_from_ptr(class, pointer)
 		void *ptr;
 
 	CODE:
-		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::MemPtr"))
+		if (sv_isobject(pointer) && sv_derived_from(pointer, "FFI::Raw::Ptr"))
 			ptr = INT2PTR(void *, SvIV((SV *) SvRV(pointer)));
 		else
 			ptr = SvRV(pointer);

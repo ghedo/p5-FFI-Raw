@@ -2,6 +2,7 @@ package FFI::Raw::MemPtr;
 
 use strict;
 use warnings;
+use base qw( FFI::Raw::Ptr );
 
 =head1 NAME
 
