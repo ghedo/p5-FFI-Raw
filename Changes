@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+0.25      2014-01-23 11:52:49 Europe/Rome
+
  - Fix build under MSWin32 64-bit (GH#17) (thanks, @plicease!)
  - Support explicit string length of 0 in MemPtr -> tostr()
    (GH#18) (thanks, @klaus)
