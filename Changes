@@ -9,6 +9,7 @@ Revision history for FFI-Raw
    (GH#18) (thanks, @klaus)
  - Add FFI::Raw::Ptr base class for pointer objects
    (GH#20) (GH#22) (thanks, @plicease!)
+ - Fix build under MS Visual C++ (GH#19) (thanks, @plicease!)
 
 0.24      2013-12-19 16:44:50 Europe/Rome
 
