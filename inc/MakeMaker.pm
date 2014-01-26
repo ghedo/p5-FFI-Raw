@@ -35,12 +35,25 @@ override _build_WriteMakefile_dump => sub {
 
 	return super() . <<'EXTRA';
 
+use File::Temp qw( tempfile );
+use ExtUtils::CBuilder;
+my $b = ExtUtils::CBuilder->new( quiet => 1 );
+die "requires c compiler" unless $b->have_compiler;
+
 if ($^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/) {
   for (@WriteMakefileArgs{'MYEXTLIB','OBJECT'}) {
     s/libffi.a/libffi.lib/;
   }
 
   $WriteMakefileArgs{CCFLAGS} = "$Config::Config{ccflags} -DFFI_BUILDING",
+} else {
+  my($fh, $filename) = tempfile( "pthread_testXXXXX", SUFFIX => '.c', EXLOCK => 0);
+  close $fh;
+
+  if ($b->compile(extra_compiler_flags => '-pthread', source => $filename)) {
+    $WriteMakefileArgs{CCFLAGS} .= ' -pthread';
+  }
+
 }
 
 EXTRA
@@ -53,7 +66,7 @@ override _build_WriteMakefile_args => sub {
 		INC	=> '-I. -Ixs -Ixs/libffi/include',
 		LIBS	=> '-lpthread',
 		OBJECT	=> '$(O_FILES) xs/libffi/.libs/libffi.a',
-		CCFLAGS	=> '-pthread',
+		CCFLAGS	=> '',
 		MYEXTLIB => 'xs/libffi/.libs/libffi.a',
 	}
 };
