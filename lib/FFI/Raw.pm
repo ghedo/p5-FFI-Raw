@@ -6,6 +6,8 @@ use warnings;
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
+require FFI::Raw::Ptr;
+
 use overload '&{}' => \&coderef;
 
 sub coderef {

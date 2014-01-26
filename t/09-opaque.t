@@ -66,4 +66,8 @@ is(Foo -> get_free_count(), 0, 'Foo->get_free_count = 0');
 undef $foo;
 is(Foo -> get_free_count(), 1, 'Foo->get_free_count = 1');
 
+my $bar = FFI::Raw::MemPtr -> new(20);
+isa_ok $bar, 'FFI::Raw::MemPtr';
+isa_ok $bar, 'FFI::Raw::Ptr';
+
 done_testing;
