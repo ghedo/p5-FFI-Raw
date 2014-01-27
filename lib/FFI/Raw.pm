@@ -2,6 +2,7 @@ package FFI::Raw;
 
 use strict;
 use warnings;
+use 5.010000;
 
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
@@ -237,5 +238,7 @@ by the Free Software Foundation; or the Artistic License.
 See http://dev.perl.org/licenses/ for more information.
 
 =cut
+
+require FFI::Raw::Ptr;
 
 1; # End of FFI::Raw
