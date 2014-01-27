@@ -238,7 +238,6 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-package
-  FFI::Raw::Ptr;
+require FFI::Raw::Ptr;
 
 1; # End of FFI::Raw
