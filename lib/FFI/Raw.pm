@@ -2,6 +2,7 @@ package FFI::Raw;
 
 use strict;
 use warnings;
+use 5.010000;
 
 require XSLoader;
 XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
