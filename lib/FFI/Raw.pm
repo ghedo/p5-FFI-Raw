@@ -8,11 +8,13 @@ XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
 require FFI::Raw::Ptr;
 
-use overload '&{}' => \&coderef;
+use overload
+    '&{}'  => \&coderef,
+    'bool' => \&_bool;
 
-sub coderef {
-	my $ffi = shift;
-	return sub { $ffi -> call(@_) };
+sub _bool {
+    my $ffi = shift;
+    return $ffi;
 }
 
 =head1 NAME
@@ -78,6 +80,13 @@ This works because FFI::Raw overloads the C<&{}> operator.
 =head2 coderef( )
 
 Return a code reference of a given C<FFI::Raw>.
+
+=cut
+
+sub coderef {
+	my $ffi = shift;
+	return sub { $ffi -> call(@_) };
+}
 
 =head1 SUBROUTINES
 
