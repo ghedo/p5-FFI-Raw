@@ -8,11 +8,18 @@ XSLoader::load('FFI::Raw', $FFI::Raw::VERSION);
 
 require FFI::Raw::Ptr;
 
-use overload '&{}' => \&coderef;
+use overload
+    '&{}'  => \&coderef,
+    'bool' => \&bool;
 
 sub coderef {
 	my $ffi = shift;
 	return sub { $ffi -> call(@_) };
+}
+
+sub bool {
+    my $ffi = shift;
+    return $ffi;
 }
 
 =head1 NAME
