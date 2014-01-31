@@ -6,6 +6,7 @@ Revision history for FFI-Raw
    (GH#23) (thanks, @plicease!)
  - Require perl >= 5.10
  - Add boolean override for FFI::Raw objects (GH#28) (thanks, @calid!)
+ - Fix build on non-threaded perl (like OpenBSD's) (GH#29) (thanks, @plicease!)
 
 0.25      2014-01-23 11:52:49 Europe/Rome
 
