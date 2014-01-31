@@ -222,12 +222,12 @@ new(class, library, function, ret_type, ...)
 		ffi_raw -> handle = dlopen(library_name, RTLD_LAZY);
 
 		if ((error = dlerror()) != NULL)
-			Perl_croak(aTHX_ error);
+			Perl_croak(aTHX_ "%s", error);
 
 		ffi_raw -> fn = dlsym(ffi_raw -> handle, function_name);
 
 		if ((error = dlerror()) != NULL)
-			Perl_croak(aTHX_ error);
+			Perl_croak(aTHX_ "%s", error);
 #endif
 		INIT_FFI_CIF(ffi_raw, 4)
 
