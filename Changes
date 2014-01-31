@@ -2,6 +2,11 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Import FFI::Raw::Ptr in FFI::Raw to avoid a bug in perl < 5.10.1
+   (GH#23) (thanks, @plicease!)
+ - Require perl >= 5.10
+ - Add boolean override for FFI::Raw objects (GH#28) (thanks, @calid!)
+
 0.25      2014-01-23 11:52:49 Europe/Rome
 
  - Fix build under MSWin32 64-bit (GH#17) (thanks, @plicease!)
