@@ -10,11 +10,16 @@ override _build_MakeFile_PL_template => sub {
 	my $template  = <<'TEMPLATE';
 
 use Config;
+use Devel::CheckLib;
+
+my $use_system_ffi = check_lib( lib => "ffi", header => "ffi.h" );
 
 sub MY::postamble {
   if ($^O eq 'MSWin32') {
     return "\t$^X -MAlien::MSYS=msys_run -Minc::MSYSConfigure -e \"configure(); msys_run 'make'\"\n\n";
   }
+
+  return if $use_system_ffi;
 
   return <<'MAKE_LIBFFI';
 $(MYEXTLIB):
@@ -45,6 +50,12 @@ if ($^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/) {
 
 if ($^O eq 'openbsd' && !$Config{usethreads}) {
   $WriteMakefileArgs{MYEXTLIB} .= ' /usr/lib/libpthread.a';
+}
+
+if ($use_system_ffi) {
+  $WriteMakefileArgs{OBJECT} = '$(O_FILES)';
+  $WriteMakefileArgs{LIBS} = '-lffi';
+  delete $WriteMakefileArgs{MYEXTLIB};
 }
 
 EXTRA
