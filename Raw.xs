@@ -194,7 +194,10 @@ new(class, library, function, ret_type, ...)
 	CODE:
 		Newx(ffi_raw, 1, FFI_Raw_t);
 
-		library_name  = SvPV_nolen(library);
+		if(SvOK(library))
+			library_name = SvPV_nolen(library);
+		else
+			library_name = NULL;
 		function_name = SvPV_nolen(function);
 #ifdef _WIN32
 		GetLastError();
