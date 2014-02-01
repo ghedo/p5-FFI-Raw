@@ -53,7 +53,7 @@ Note that this module has nothing to do with L<FFI>.
 Create a new C<FFI::Raw> object. It loads C<$library>, finds the function
 C<$function> with return type C<$return_type> and creates a calling interface.
 
-If <$library> is C<undef> then the function is searched in the main program.
+If C<$library> is C<undef> then the function is searched in the main program.
 
 This function also takes a variable number of types, representing the argument
 of the wanted function.
