@@ -23,6 +23,7 @@ typedef unsigned __int64 uint64_t;
 
 #if defined(_WIN32) || defined(__CYGWIN32__)
 # include <windows.h>
+# include <psapi.h>
 #else
 # include <dlfcn.h>
 #endif
@@ -190,6 +191,14 @@ new(class, library, function, ret_type, ...)
 		FFI_Raw_t *ffi_raw;
 
 		const char *library_name, *function_name;
+#if defined(_WIN32) || defined(__CYGWIN32__)
+		int n;
+		DWORD needed;
+
+		HANDLE process;
+		HMODULE mods[1024];
+		TCHAR mod_name[MAX_PATH];
+#endif
 
 	CODE:
 		Newx(ffi_raw, 1, FFI_Raw_t);
@@ -202,23 +211,58 @@ new(class, library, function, ret_type, ...)
 #if defined(_WIN32) || defined(__CYGWIN32__)
 		GetLastError();
 
-		ffi_raw -> handle = LoadLibrary(library_name);
+		if (library_name != NULL) {
+			ffi_raw -> handle = LoadLibrary(library_name);
 
-		if (ffi_raw->handle == NULL)
-			Perl_croak(aTHX_ "library not found");
+			if (ffi_raw->handle == NULL)
+				Perl_croak(aTHX_ "Library not found");
 
-		/*if ((error = GetLastError()) != NULL)
-			Perl_croak(aTHX_ error);*/
+			/*if ((error = GetLastError()) != NULL)
+				Perl_croak(aTHX_ error);*/
 
-		ffi_raw -> fn = GetProcAddress(
-			ffi_raw -> handle, function_name
-		);
+			ffi_raw -> fn = GetProcAddress(
+				ffi_raw -> handle, function_name
+			);
 
-		if (ffi_raw -> fn == NULL)
-			Perl_croak(aTHX_ "function not found");
+			if (ffi_raw -> fn == NULL)
+				Perl_croak(aTHX_ "Function not found");
 
-		/*if ((error = GetLastError()) != NULL)
-			Perl_croak(aTHX_ error);*/
+			/*if ((error = GetLastError()) != NULL)
+				Perl_croak(aTHX_ error);*/
+		} else {
+			process = OpenProcess(
+				PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+				FALSE, GetCurrentProcessId()
+			);
+
+			if (process == NULL)
+				Perl_croak(aTHX_ "Process not found");
+
+			if (EnumProcessModules(process, mods,
+					       sizeof(mods), &needed)) {
+				for (n = 0; n < (needed/sizeof(HMODULE)); n++) {
+					if (GetModuleFileNameEx(process, mods[n], mod_name, sizeof(mod_name) / sizeof(TCHAR))) {
+
+						ffi_raw -> handle = LoadLibrary(mod_name);
+
+						if (ffi_raw -> handle == NULL)
+							continue;
+
+						ffi_raw -> fn = GetProcAddress(
+							ffi_raw -> handle, function_name
+						);
+
+						if (ffi_raw -> fn != NULL)
+							break;
+
+						FreeLibrary(ffi_raw -> handle);
+					}
+				}
+			}
+
+			if (ffi_raw -> fn == NULL)
+				Perl_croak(aTHX_ "Function not found");
+		}
 #else
 		dlerror();
 

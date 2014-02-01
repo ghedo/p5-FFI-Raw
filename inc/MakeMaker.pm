@@ -40,12 +40,19 @@ override _build_WriteMakefile_dump => sub {
 
 	return super() . <<'EXTRA';
 
+my @libs;
+
 if ($^O eq 'MSWin32' && $Config{cc} =~ /cl(\.exe)?$/) {
   for (@WriteMakefileArgs{'MYEXTLIB','OBJECT'}) {
     s/libffi.a/libffi.lib/;
   }
 
-  $WriteMakefileArgs{CCFLAGS} = "$Config::Config{ccflags} -DFFI_BUILDING",
+  $WriteMakefileArgs{CCFLAGS}   = "$Config{ccflags} -DFFI_BUILDING",
+  $WriteMakefileArgs{LDDLFLAGS} = "$Config{lddlflags} psapi.lib";
+
+} elsif ($^O =~ /^(MSWin32|cygwin)$/) {
+  push @libs, '-L/usr/lib/w32api' if ($^O eq 'cygwin');
+  push @libs, '-lpsapi';
 }
 
 if ($^O eq 'openbsd' && !$Config{usethreads}) {
@@ -54,9 +61,11 @@ if ($^O eq 'openbsd' && !$Config{usethreads}) {
 
 if ($use_system_ffi) {
   $WriteMakefileArgs{OBJECT} = '$(O_FILES)';
-  $WriteMakefileArgs{LIBS} = '-lffi';
+  push @libs, '-lffi';
   delete $WriteMakefileArgs{MYEXTLIB};
 }
+
+$WriteMakefileArgs{LIBS} = "@libs" if @libs;
 
 EXTRA
 };
