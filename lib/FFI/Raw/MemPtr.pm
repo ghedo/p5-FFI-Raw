@@ -12,6 +12,9 @@ FFI::Raw::MemPtr - FFI::Raw memory pointer type
 A B<FFI::Raw::MemPtr> represents a memory pointer which can be passed to
 functions taking a C<FFI::Raw::ptr> argument.
 
+The allocated memory is automatically deallocated once the object is not in use
+anymore.
+
 =head1 METHODS
 
 =head2 new( $length )
@@ -25,7 +28,7 @@ into it. This can be used, for example, to pass a pointer to a function that
 takes a C struct pointer, by using C<pack()> or the L<Convert::Binary::C> module
 to create the actual struct content.
 
-For example, consider a C function:
+For example, consider the following C code
 
     struct some_struct {
       int some_int;
@@ -62,7 +65,8 @@ This is the C<FFI::Raw> equivalent of a pointer to a pointer.
 
 =head2 tostr( [$length] )
 
-Convert a C<FFI::Raw::MemPtr> to a Perl string.
+Convert a C<FFI::Raw::MemPtr> to a Perl string. If C<$length> is not provided,
+the length of the string will be computed using C<strlen()>.
 
 =head1 AUTHOR
 

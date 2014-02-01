@@ -64,7 +64,7 @@ not automatically deallocated once not in use anymore.
 =head2 new( $ptr )
 
 Create a new C<FFI::Raw::Ptr> pointing to C<$ptr>, which can be either a
-C<FFI::Raw::MemPtr> or a pointer returned by another function.
+C<FFI::Raw::MemPtr> or a pointer returned by a C function.
 
 =cut
 
