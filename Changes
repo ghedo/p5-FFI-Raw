@@ -8,6 +8,7 @@ Revision history for FFI-Raw
  - Add boolean override for FFI::Raw objects (GH#28) (thanks, @calid!)
  - Fix build on non-threaded perl (like OpenBSD's) (GH#29) (thanks, @plicease!)
  - Use system libffi if available (GH#30) (GH#32) (thanks, @plicease!)
+ - Allow resolving functions in the main program (GH#33) (thanks, @plicease!)
 
 0.25      2014-01-23 11:52:49 Europe/Rome
 
