@@ -250,12 +250,10 @@ new(class, library, function, ret_type, ...)
 							ffi_raw -> handle, function_name
 						);
 						
-						if (ffi_raw -> fn != NULL) {
+						if (ffi_raw -> fn != NULL)
 							break;
-						} else {
-							FreeLibrary(ffi_raw -> fn);
-							continue;
-						}
+						else
+							FreeLibrary(ffi_raw -> handle);
 					}
 				}
 			}
