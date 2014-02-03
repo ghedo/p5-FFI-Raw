@@ -13,6 +13,17 @@ use Config;
 use Devel::CheckLib;
 
 my $use_system_ffi = check_lib(lib => "ffi", header => "ffi.h");
+my $pkg_config;
+
+if (!$use_system_ffi && eval { require ExtUtils::PkgConfig }) {
+  my %pkg_config = eval { ExtUtils::PkgConfig->find('libffi') };
+  unless($@) {
+    if(check_lib(header => "ffi.h", LIBS => $pkg_config{libs}, INC => $pkg_config{cflags})) {
+      $use_system_ffi = 1;
+      $pkg_config = \%pkg_config;
+    }
+  }
+}
 
 sub MY::postamble {
   if ($^O eq 'MSWin32') {
@@ -61,7 +72,12 @@ if ($^O eq 'openbsd' && !$Config{usethreads}) {
 
 if ($use_system_ffi) {
   $WriteMakefileArgs{OBJECT} = '$(O_FILES)';
-  push @libs, '-lffi';
+  if($pkg_config) {
+    push @libs, $pkg_config->{libs};
+    $WriteMakefileArgs{CCFLAGS} = "$Config{ccflags} " . $pkg_config->{cflags};
+  } else {
+    push @libs, '-lffi';
+  }
   delete $WriteMakefileArgs{MYEXTLIB};
 }
 
