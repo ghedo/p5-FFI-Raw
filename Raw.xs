@@ -21,7 +21,7 @@ typedef unsigned __int64 uint64_t;
 #include "perl_math_int64.h"
 #include "perl_math_int64.c"
 
-#if defined(_WIN32) || defined(__CYGWIN32__)
+#if defined(_WIN32) || defined(__CYGWIN__)
 # include <windows.h>
 # include <psapi.h>
 #else
@@ -191,7 +191,7 @@ new(class, library, function, ret_type, ...)
 		FFI_Raw_t *ffi_raw;
 
 		const char *library_name, *function_name;
-#if defined(_WIN32) || defined(__CYGWIN32__)
+#if defined(_WIN32) || defined(__CYGWIN__)
 		int n;
 		DWORD needed;
 
@@ -208,7 +208,7 @@ new(class, library, function, ret_type, ...)
 		else
 			library_name = NULL;
 		function_name = SvPV_nolen(function);
-#if defined(_WIN32) || defined(__CYGWIN32__)
+#if defined(_WIN32) || defined(__CYGWIN__)
 		GetLastError();
 
 		if (library_name != NULL) {
@@ -463,7 +463,7 @@ DESTROY(self)
 
 	CODE:
 		if (self -> handle)
-#if defined(_WIN32) || defined(__CYGWIN32__)
+#if defined(_WIN32) || defined(__CYGWIN__)
 		FreeLibrary(self -> handle);
 #else
 		dlclose(self -> handle);
