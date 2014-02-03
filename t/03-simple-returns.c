@@ -11,13 +11,17 @@ extern EXPORT unsigned long return_ulong() {
 	return ULONG_MAX;
 }
 
+#ifdef LLONG_MIN
 extern EXPORT int64_t return_int64() {
 	return LLONG_MIN;
 }
+#endif
 
+#ifdef ULLONG_MAX
 extern EXPORT uint64_t return_uint64() {
 	return ULLONG_MAX;
 }
+#endif
 
 extern EXPORT int return_int() {
 	return 101;

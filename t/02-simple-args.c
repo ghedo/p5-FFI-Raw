@@ -23,6 +23,7 @@ extern EXPORT void take_one_ulong(unsigned long x) {
 	fflush(stdout);
 }
 
+#ifdef LLONG_MIN
 extern EXPORT void take_one_int64(int64_t x) {
 	if (x == LLONG_MIN)
 		printf("ok - got passed int64 %" PRId64 "\n", x);
@@ -31,7 +32,9 @@ extern EXPORT void take_one_int64(int64_t x) {
 
 	fflush(stdout);
 }
+#endif
 
+#ifdef ULLONG_MAX
 extern EXPORT void take_one_uint64(uint64_t x) {
 	if (x == ULLONG_MAX)
 		printf("ok - got passed uint64 %" PRIu64 "\n", x);
@@ -40,6 +43,7 @@ extern EXPORT void take_one_uint64(uint64_t x) {
 
 	fflush(stdout);
 }
+#endif
 
 extern EXPORT void take_one_int(int x) {
 	if (x == 42)

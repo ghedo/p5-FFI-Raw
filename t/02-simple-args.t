@@ -29,10 +29,16 @@ if ($@) {
 	last SKIP;
 }
 
-my $take_one_int64 = FFI::Raw -> new(
+my $take_one_int64 = eval { FFI::Raw -> new(
 	$shared, 'take_one_int64',
 	FFI::Raw::void, FFI::Raw::int64
-);
+) };
+
+if ($@) {
+	print "# LLONG_MIN and ULLONG_MAX required for int64 tests\n";
+	$tests -= 2;
+	last SKIP;
+}
 
 $take_one_int64 -> call($min_int64);
 

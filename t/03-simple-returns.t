@@ -23,7 +23,10 @@ eval "use Math::Int64";
 
 skip 'Math::Int64 required for int64 tests', 4 if $@;
 
-my $return_int64 = FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64);
+my $return_int64 = eval { FFI::Raw -> new($shared, 'return_int64', FFI::Raw::int64) };
+
+skip 'LLONG_MIN and ULLONG_MAX required for int64 tests', 4 if $@;
+
 is $return_int64 -> call, $min_int64->bstr();
 is $return_int64 -> (), $min_int64->bstr();
 
