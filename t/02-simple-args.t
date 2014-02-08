@@ -11,7 +11,7 @@ my $test   = '02-simple-args';
 my $source = "./t/$test.c";
 my $shared = CompileTest::compile($source);
 
-my $tests = 19;
+my $tests = 24;
 
 # integers
 
@@ -71,7 +71,42 @@ my $take_one_int = FFI::Raw -> new(
 	FFI::Raw::void, FFI::Raw::int
 );
 
-$take_one_int -> call(42);
+$take_one_int -> call(INT_MIN);
+
+my $take_one_uint = FFI::Raw -> new(
+	$shared, 'take_one_uint',
+	FFI::Raw::void, FFI::Raw::uint
+);
+
+$take_one_uint -> call(UINT_MAX);
+
+my $take_one_short = FFI::Raw -> new(
+	$shared, 'take_one_short',
+	FFI::Raw::void, FFI::Raw::short
+);
+
+$take_one_short -> call(SHRT_MIN);
+
+my $take_one_ushort = FFI::Raw -> new(
+	$shared, 'take_one_ushort',
+	FFI::Raw::void, FFI::Raw::ushort
+);
+
+$take_one_ushort -> call(USHRT_MAX);
+
+my $take_one_char = FFI::Raw -> new(
+	$shared, 'take_one_char',
+	FFI::Raw::void, FFI::Raw::char
+);
+
+$take_one_char -> call(CHAR_MIN);
+
+my $take_one_uchar = FFI::Raw -> new(
+	$shared, 'take_one_uchar',
+	FFI::Raw::void, FFI::Raw::uchar
+);
+
+$take_one_uchar -> call(UCHAR_MAX);
 
 my $take_two_shorts = FFI::Raw -> new(
 	$shared, 'take_two_shorts',
