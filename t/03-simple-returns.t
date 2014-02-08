@@ -44,16 +44,28 @@ is $return_ulong -> call, ULONG_MAX;
 is $return_ulong -> (), ULONG_MAX;
 
 my $return_int = FFI::Raw -> new($shared, 'return_int', FFI::Raw::int);
-is $return_int -> call, 101;
-is $return_int -> (), 101;
+is $return_int -> call, INT_MIN;
+is $return_int -> (), INT_MIN;
+
+my $return_uint = FFI::Raw -> new($shared, 'return_uint', FFI::Raw::uint);
+is $return_uint -> call, UINT_MAX;
+is $return_uint -> (), UINT_MAX;
 
 my $return_short = FFI::Raw -> new($shared, 'return_short', FFI::Raw::short);
-is $return_short -> call, 102;
-is $return_short -> (), 102;
+is $return_short -> call, SHRT_MIN;
+is $return_short -> (), SHRT_MIN;
+
+my $return_ushort = FFI::Raw -> new($shared, 'return_ushort', FFI::Raw::ushort);
+is $return_ushort -> call, USHRT_MAX;
+is $return_ushort -> (), USHRT_MAX;
 
 my $return_char = FFI::Raw -> new($shared, 'return_char', FFI::Raw::char);
-is $return_char -> call, -103;
-is $return_char -> (), -103;
+is $return_char -> call, CHAR_MIN;
+is $return_char -> (), CHAR_MIN;
+
+my $return_uchar = FFI::Raw -> new($shared, 'return_uchar', FFI::Raw::uchar);
+is $return_uchar -> call, UCHAR_MAX;
+is $return_uchar -> (), UCHAR_MAX;
 
 my $return_double = FFI::Raw -> new($shared, 'return_double', FFI::Raw::double);
 

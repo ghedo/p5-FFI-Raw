@@ -24,15 +24,27 @@ extern EXPORT uint64_t return_uint64() {
 #endif
 
 extern EXPORT int return_int() {
-	return 101;
+	return INT_MIN;
+}
+
+extern EXPORT unsigned int return_uint() {
+	return UINT_MAX;
 }
 
 extern EXPORT short return_short() {
-	return 102;
+	return SHRT_MIN;
+}
+
+extern EXPORT unsigned short return_ushort() {
+	return USHRT_MAX;
 }
 
 extern EXPORT char return_char() {
-	return -103;
+	return CHAR_MIN;
+}
+
+extern EXPORT unsigned char return_uchar() {
+	return UCHAR_MAX;
 }
 
 extern EXPORT double return_double() {
