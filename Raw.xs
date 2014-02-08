@@ -2,6 +2,10 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#define NEED_sv_2pv_flags
+
+#include "ppport.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

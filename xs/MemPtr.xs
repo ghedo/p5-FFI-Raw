@@ -2,7 +2,7 @@ MODULE = FFI::Raw				PACKAGE = FFI::Raw::MemPtr
 
 BOOT:
 {
-	AV *isa = perl_get_av("FFI::Raw::MemPtr::ISA",1);
+	AV *isa = get_av("FFI::Raw::MemPtr::ISA", 1);
 	av_push(isa, newSVpv("FFI::Raw::Ptr", 0));
 }
 
