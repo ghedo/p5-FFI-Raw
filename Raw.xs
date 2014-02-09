@@ -318,12 +318,34 @@ new_from_ptr(class, function, ret_type, ...)
 	break;					\
 }
 
-#define FFI_CALL(TYPE, FN) {			\
-	TYPE result;				\
-	ffi_call(&self -> cif, self -> fn, &result, values);	\
-	output = FN(result);			\
+
+#if __BYTE_ORDER == __BIG_ENDIAN
+# define FFI_CALL(TYPE, FN) {			\
+	void *result;				\
+	ffi_type *rtype = self -> ret;		\
+	Newx(result, 1, TYPE);			\
+	ffi_call(&self -> cif, self -> fn, result, values); \
+	if (rtype -> type != FFI_TYPE_FLOAT &&	\
+	    rtype -> type != FFI_TYPE_STRUCT &&	\
+	    rtype -> size < sizeof(ffi_arg))	\
+		result = (char *) result +	\
+			 sizeof(ffi_arg) -	\
+			 rtype -> size;		\
+	output = FN(*(TYPE *) result);		\
+	Safefree(result);			\
 	break;					\
 }
+#else
+# define FFI_CALL(TYPE, FN) {			\
+	void *result;				\
+	ffi_type *rtype = self -> ret;		\
+	Newx(result, 1, TYPE);			\
+	ffi_call(&self -> cif, self -> fn, result, values); \
+	output = FN(*(TYPE *) result);		\
+	Safefree(result);			\
+	break;					\
+}
+#endif
 
 SV *
 call(self, ...)
