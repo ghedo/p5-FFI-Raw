@@ -2,6 +2,9 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Correctly handle unsigned values
+ - Correctly handle return values on big endian platforms (GH#38)
+
 0.27      2014-02-03 19:44:11 Europe/Rome
 
  - Skip int64 tests if LLONG constants are not available
