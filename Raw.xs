@@ -322,8 +322,10 @@ new_from_ptr(class, function, ret_type, ...)
 #if __BYTE_ORDER == __BIG_ENDIAN
 # define FFI_CALL(TYPE, FN) {			\
 	void *result;				\
+	void *original;                         \
 	ffi_type *rtype = self -> ret;		\
 	Newx(result, 1, TYPE);			\
+	original = result;                      \
 	ffi_call(&self -> cif, self -> fn, result, values); \
 	if (rtype -> type != FFI_TYPE_FLOAT &&	\
 	    rtype -> type != FFI_TYPE_STRUCT &&	\
@@ -332,7 +334,7 @@ new_from_ptr(class, function, ret_type, ...)
 			 sizeof(ffi_arg) -	\
 			 rtype -> size;		\
 	output = FN(*(TYPE *) result);		\
-	Safefree(result);			\
+	Safefree(original);			\
 	break;					\
 }
 #else
