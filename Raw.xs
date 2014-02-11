@@ -32,6 +32,10 @@ typedef unsigned __int64 uint64_t;
 # include <dlfcn.h>
 #endif
 
+#if defined(__CYGWIN__)
+# include <sys/cygwin.h>
+#endif
+
 typedef struct FFI_RAW {
 	void *fn;
 	void *handle;
@@ -115,6 +119,31 @@ void *_ffi_raw_get_type(char type) {
 	XPUSHs(sv_2mortal(arg));					\
 	break;								\
 }
+
+#if defined(__CYGWIN__)
+void *_ffi_raw_win32_load_library(const char *posix_path) {
+	void *lib;
+
+	ssize_t size;
+	char *win_path;
+
+	size = cygwin_conv_path(CCP_POSIX_TO_WIN_A | CCP_RELATIVE, posix_path, NULL, 0);
+	if (size < 0) return NULL;
+
+	Newx(win_path, size, char);
+	if (cygwin_conv_path(CCP_POSIX_TO_WIN_A | CCP_RELATIVE, posix_path, win_path, size)) {
+		Safefree(win_path);
+		return NULL;
+	}
+
+	lib = LoadLibrary(win_path);
+	Safefree(win_path);
+
+	return lib;
+}
+#elif defined(_WIN32)
+# define _ffi_raw_win32_load_library(fn) LoadLibrary(fn)
+#endif
 
 void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 	dSP;
@@ -207,16 +236,17 @@ new(class, library, function, ret_type, ...)
 	CODE:
 		Newx(ffi_raw, 1, FFI_Raw_t);
 
-		if(SvOK(library))
+		if (SvOK(library))
 			library_name = SvPV_nolen(library);
 		else
 			library_name = NULL;
+
 		function_name = SvPV_nolen(function);
 #if defined(_WIN32) || defined(__CYGWIN__)
 		GetLastError();
 
 		if (library_name != NULL) {
-			ffi_raw -> handle = LoadLibrary(library_name);
+			ffi_raw -> handle = _ffi_raw_win32_load_library(library_name);
 
 			if (ffi_raw->handle == NULL)
 				Perl_croak(aTHX_ "Library not found");
@@ -247,7 +277,7 @@ new(class, library, function, ret_type, ...)
 				for (n = 0; n < (needed/sizeof(HMODULE)); n++) {
 					if (GetModuleFileNameEx(process, mods[n], mod_name, sizeof(mod_name) / sizeof(TCHAR))) {
 
-						ffi_raw -> handle = LoadLibrary(mod_name);
+						ffi_raw -> handle = _ffi_raw_win32_load_library(mod_name);
 
 						if (ffi_raw -> handle == NULL)
 							continue;
