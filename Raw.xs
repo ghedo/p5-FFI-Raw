@@ -32,6 +32,34 @@ typedef unsigned __int64 uint64_t;
 # include <dlfcn.h>
 #endif
 
+#if defined(__CYGWIN__)
+# include <sys/cygwin.h>
+
+void *myLoadLibrary(const char *posix_path)
+{
+	ssize_t size;
+	char *win_path;
+	void *lib;
+	
+	size = cygwin_conv_path(CCP_POSIX_TO_WIN_A | CCP_RELATIVE, posix_path, NULL, 0);
+	if(size < 0)
+		return NULL;
+		
+	Newx(win_path, size, char);
+	if(cygwin_conv_path(CCP_POSIX_TO_WIN_A | CCP_RELATIVE, posix_path, win_path, size)) {
+		Safefree(win_path);
+		return NULL;
+	}
+	
+	lib = LoadLibrary(win_path);
+	Safefree(win_path);
+	return lib;
+}
+
+#elif defined(_WIN32)
+# define myLoadLibrary(fn) LoadLibrary(fn)
+#endif
+
 typedef struct FFI_RAW {
 	void *fn;
 	void *handle;
@@ -216,7 +244,7 @@ new(class, library, function, ret_type, ...)
 		GetLastError();
 
 		if (library_name != NULL) {
-			ffi_raw -> handle = LoadLibrary(library_name);
+			ffi_raw -> handle = myLoadLibrary(library_name);
 
 			if (ffi_raw->handle == NULL)
 				Perl_croak(aTHX_ "Library not found");
@@ -247,7 +275,7 @@ new(class, library, function, ret_type, ...)
 				for (n = 0; n < (needed/sizeof(HMODULE)); n++) {
 					if (GetModuleFileNameEx(process, mods[n], mod_name, sizeof(mod_name) / sizeof(TCHAR))) {
 
-						ffi_raw -> handle = LoadLibrary(mod_name);
+						ffi_raw -> handle = myLoadLibrary(mod_name);
 
 						if (ffi_raw -> handle == NULL)
 							continue;
