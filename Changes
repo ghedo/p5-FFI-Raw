@@ -4,6 +4,7 @@ Revision history for FFI-Raw
 
  - Correctly handle unsigned values
  - Correctly handle return values on big endian platforms (GH#38)
+ - Correctly handle absolute paths on Cygwin (GH#39) (thanks, @plicease!)
 
 0.27      2014-02-03 19:44:11 Europe/Rome
 
