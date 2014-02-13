@@ -27,11 +27,11 @@ if (!$use_system_ffi && eval { require ExtUtils::PkgConfig }) {
 }
 
 sub MY::postamble {
+  return if $use_system_ffi;
+
   if ($^O eq 'MSWin32') {
     return "\t$^X -MAlien::MSYS=msys_run -Minc::MSYSConfigure -e \"configure(); msys_run 'make'\"\n\n";
   }
-
-  return if $use_system_ffi;
 
   return <<'MAKE_LIBFFI';
 $(MYEXTLIB):
