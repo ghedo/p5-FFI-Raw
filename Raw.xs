@@ -349,7 +349,7 @@ new_from_ptr(class, function, ret_type, ...)
 }
 
 
-#if __BYTE_ORDER == __BIG_ENDIAN
+#if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN
 # define FFI_CALL(TYPE, FN) {			\
 	void *result;				\
 	void *original;                         \
