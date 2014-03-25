@@ -208,6 +208,11 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 
 			value = SvRV(rv);
 
+			if (!SvOK(value)) {
+				*(char**) ret = NULL;
+				break;
+			}
+
 			if(SvREFCNT(value) <= 2) {
 				Perl_croak(aTHX_ "Reference to string must not be anonymous for callback return value");
 				break;
