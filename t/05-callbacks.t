@@ -93,4 +93,15 @@ eval { $return_str_callback -> call(FFI::Raw::callback(sub { \"foo" }, FFI::Raw:
 
 print ($@ =~ /Reference to string must not be anonymous for callback return value/ ? "ok\n" : "not ok - \$\@ = $@\n");
 
-print "1..13\n";
+my $buffer = FFI::Raw::MemPtr->new_from_buf( "bar\0", length "bar\0" );
+my $cb5 = FFI::Raw::callback(sub { $buffer }, FFI::Raw::ptr);
+
+print "ok - survived the call\n";
+
+$return_str_callback -> call($cb5);
+
+$value = $get_str_value -> call();
+
+print ($value eq 'bar' ? "ok\n" : "not ok - returned $value\n");
+
+print "1..15\n";
