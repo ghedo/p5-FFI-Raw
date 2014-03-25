@@ -93,6 +93,12 @@ eval { $return_str_callback -> call(FFI::Raw::callback(sub { \"foo" }, FFI::Raw:
 
 print ($@ =~ /Reference to string must not be anonymous for callback return value/ ? "ok\n" : "not ok - \$\@ = $@\n");
 
+my $reset = FFI::Raw -> new(
+	$shared, 'reset',
+	FFI::Raw::void,
+);
+
+$reset -> call();
 my $buffer = FFI::Raw::MemPtr->new_from_buf( "bar\0", length "bar\0" );
 my $cb5 = FFI::Raw::callback(sub { $buffer }, FFI::Raw::ptr);
 
@@ -104,4 +110,27 @@ $value = $get_str_value -> call();
 
 print ($value eq 'bar' ? "ok\n" : "not ok - returned $value\n");
 
-print "1..15\n";
+$reset -> call();
+my $buffer = FFI::Raw::MemPtr->new_from_buf( "baz\0", length "baz\0" );
+my $cb6 = FFI::Raw::callback(sub { $$buffer }, FFI::Raw::ptr);
+
+print "ok - survived the call\n";
+
+$return_str_callback -> call($cb6);
+
+$value = $get_str_value -> call();
+
+print ($value eq 'baz' ? "ok\n" : "not ok - returned $value\n");
+
+$reset -> call();
+my $cb7 = FFI::Raw::callback(sub { undef }, FFI::Raw::ptr);
+
+print "ok - survived the call\n";
+
+$return_str_callback -> call($cb7);
+
+$value = $get_str_value -> call();
+
+print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
+
+print "1..19\n";

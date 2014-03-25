@@ -217,7 +217,24 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 			
 			break;
 		}
-		case 'p': Perl_croak(aTHX_ "Not supported");
+		case 'p': {
+			SV *value;
+			
+			value = POPs;
+			
+			if (!SvOK(value)) {
+				*(void**) ret = NULL;
+				break;
+			}
+			
+			if (sv_derived_from(value, "FFI::Raw::Ptr") || sv_derived_from(value, "FFI::Raw::Callback")) {
+				value = SvRV(value);
+			}
+
+			*(void**) ret = INT_TO_PTR(value);
+		
+			break;
+		}
 	}
 
 	PUTBACK;
