@@ -196,7 +196,27 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 		case 'C': *(unsigned char *) ret = POPi; break;
 		case 'f': *(float *) ret = POPn; break;
 		case 'd': *(double *) ret = POPn; break;
-		case 's': Perl_croak(aTHX_ "Not supported");
+		case 's': {
+			SV *rv, *value;
+
+			rv = POPs;
+
+			if(!SvROK(rv)) {
+				Perl_croak(aTHX_ "String return value must be returned as a reference for callback");
+				break;
+			}
+
+			value = SvRV(rv);
+
+			if(SvREFCNT(value) <= 2) {
+				Perl_croak(aTHX_ "Reference to string must not be anonymous for callback return value");
+				break;
+			}
+
+			*(char**) ret = SvPV_nolen(value);
+
+			break;
+		}
 		case 'p': Perl_croak(aTHX_ "Not supported");
 	}
 
