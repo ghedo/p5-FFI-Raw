@@ -2,6 +2,10 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Avoid warnings when using undef to mean NULL (GH#44) (thanks, @plicease!)
+ - Support returning pointers and strings from callbacks
+   (GH#42) (GH#43) (thanks, @plicease!)
+
 0.28      2014-02-14 13:09:10 Europe/Rome
 
  - Correctly handle unsigned values
