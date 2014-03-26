@@ -432,26 +432,24 @@ call(self, ...)
 
 					Newx(val, 1, void *);
 					
-					if (!SvOK(arg)) {
+					if (!SvOK(arg))
 						*val = NULL;
-						values[i] = val;
-						break;
+					else {
+						if (sv_derived_from(
+							arg, "FFI::Raw::Ptr"
+						)) {
+							arg = SvRV(arg);
+						}
+	
+						if (sv_derived_from(
+							arg, "FFI::Raw::Callback"
+						)) {
+							FFI_Raw_Callback_t *cb =
+								INT_TO_PTR(SvRV(arg));
+							*val = cb -> fn;
+						} else
+							*val = INT_TO_PTR(arg);
 					}
-
-					if (sv_derived_from(
-						arg, "FFI::Raw::Ptr"
-					)) {
-						arg = SvRV(arg);
-					}
-
-					if (sv_derived_from(
-						arg, "FFI::Raw::Callback"
-					)) {
-						FFI_Raw_Callback_t *cb =
-							INT_TO_PTR(SvRV(arg));
-						*val = cb -> fn;
-					} else
-						*val = INT_TO_PTR(arg);
 
 					values[i] = val;
 					break;
