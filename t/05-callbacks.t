@@ -65,7 +65,7 @@ print ($check1 == (42 + 15) ? "ok\n" : "not ok - returned $check1\n");
 print ($check2 == (42 + 15) ? "ok\n" : "not ok - returned $check2\n");
 
 my $str_value = \"foo";
-my $cb4 = FFI::Raw::callback(sub { $str_value }, FFI::Raw::str);
+my $cb4 = FFI::Raw::callback(sub { $$str_value }, FFI::Raw::str);
 
 print "ok - survived the call\n";
 
@@ -91,14 +91,6 @@ $return_str_callback->call($cb4);
 my $value = $get_str_value -> call();
 
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
-
-eval { $return_str_callback -> call(FFI::Raw::callback(sub { "foo" }, FFI::Raw::str)) };
-
-print ($@ =~ /String return value must be returned as a reference for callback/ ? "ok\n" : "not ok - \$\@ = $@\n");
-
-eval { $return_str_callback -> call(FFI::Raw::callback(sub { \"foo" }, FFI::Raw::str)) };
-
-print ($@ =~ /Reference to string must not be anonymous for callback return value/ ? "ok\n" : "not ok - \$\@ = $@\n");
 
 my $reset = FFI::Raw -> new(
 	$shared, 'reset',
@@ -140,4 +132,4 @@ $value = $get_str_value -> call();
 
 print ($value eq 'NULL' ? "ok\n" : "not ok - returned $value\n");
 
-print "1..20\n";
+print "1..18\n";
