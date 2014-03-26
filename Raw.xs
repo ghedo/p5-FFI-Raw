@@ -58,6 +58,7 @@ typedef struct FFI_RAW_CALLBACK {
 	ffi_cif cif;
 	ffi_type *ret;
 	char ret_type;
+	void *ret_value;
 	ffi_type **args;
 	char *args_types;
 	unsigned int argc;
@@ -197,28 +198,15 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 		case 'f': *(float *) ret = POPn; break;
 		case 'd': *(double *) ret = POPn; break;
 		case 's': {
-			SV *rv, *value;
+			SV *value = POPs;
 
-			rv = POPs;
-
-			if(!SvROK(rv)) {
-				Perl_croak(aTHX_ "String return value must be returned as a reference for callback");
-				break;
-			}
-
-			value = SvRV(rv);
-
-			if (!SvOK(value)) {
+			if (self -> ret_value != NULL)
+				Safefree(self -> ret_value);
+			if (SvOK(value))
+				*(char**) ret = savepv(SvPV_nolen(value));
+			else
 				*(char**) ret = NULL;
-				break;
-			}
-
-			if(SvREFCNT(value) <= 2) {
-				Perl_croak(aTHX_ "Reference to string must not be anonymous for callback return value");
-				break;
-			}
-
-			*(char**) ret = SvPV_nolen(value);
+			self -> ret_value = *(void**) ret;
 
 			break;
 		}
