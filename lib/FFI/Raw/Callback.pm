@@ -19,6 +19,14 @@ be passed to functions taking a C<FFI::Raw::ptr> type.
 Create a C<FFI::Raw::Callback> using the code reference C<$coderef> as body. The
 signature (return and arguments types) must also be passed.
 
+=head1 CAVEATS
+
+For callbacks with a C<FFI::Raw::str> return type, the string value will be copied
+to a private field on the callback object.  The memory for this value will be
+freed the next time the callback is called, or when the callback itself is freed.
+For more exact control over when the return value is freed, you can instead
+use C<FFI::Raw::ptr> type and return a L<FFI::Raw::MemPtr> object.
+
 =head1 AUTHOR
 
 Alessandro Ghedini <alexbio@cpan.org>
