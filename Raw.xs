@@ -58,10 +58,10 @@ typedef struct FFI_RAW_CALLBACK {
 	ffi_cif cif;
 	ffi_type *ret;
 	char ret_type;
+	const char *ret_value;
 	ffi_type **args;
 	char *args_types;
 	unsigned int argc;
-	const char *string_value;
 } FFI_Raw_Callback_t;
 
 void *_ffi_raw_get_type(char type) {
@@ -200,12 +200,12 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 		case 's': {
 			SV *value = POPs;
 			
-			if (self -> string_value != NULL)
-				Safefree(self -> string_value);
+			if (self -> ret_value != NULL)
+				Safefree(self -> ret_value);
 			if (SvOK(value))
-				self -> string_value = *(char**) ret = strdup(SvPV_nolen(value));
+				self -> ret_value = *(char**) ret = strdup(SvPV_nolen(value));
 			else
-				self -> string_value = *(char**) ret = NULL;
+				self -> ret_value = *(char**) ret = NULL;
 			
 			break;
 		}

@@ -15,7 +15,7 @@ new(class, coderef, ret_type, ...)
 		Newx(ffi_raw_cb, 1, FFI_Raw_Callback_t);
 
 		ffi_raw_cb -> coderef = SvREFCNT_inc(coderef);
-		ffi_raw_cb -> string_value = NULL;
+		ffi_raw_cb -> ret_value = NULL;
 
 		ffi_raw_cb -> closure = ffi_closure_alloc(
 			sizeof(ffi_closure),
@@ -41,8 +41,8 @@ DESTROY(self)
 	CODE:
 		SvREFCNT_dec(self -> coderef);
 
-		if (self -> string_value != NULL)
-			Safefree(self -> string_value);
+		if (self -> ret_value != NULL)
+			Safefree(self -> ret_value);
 		Safefree(self -> args_types);
 		Safefree(self -> args);
 		Safefree(self);
