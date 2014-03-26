@@ -431,6 +431,12 @@ call(self, ...)
 					void **val;
 
 					Newx(val, 1, void *);
+					
+					if (!SvOK(arg)) {
+						*val = NULL;
+						values[i] = val;
+						break;
+					}
 
 					if (sv_derived_from(
 						arg, "FFI::Raw::Ptr"
@@ -444,10 +450,8 @@ call(self, ...)
 						FFI_Raw_Callback_t *cb =
 							INT_TO_PTR(SvRV(arg));
 						*val = cb -> fn;
-					} else if (SvOK(arg))
+					} else
 						*val = INT_TO_PTR(arg);
-					else
-						*val = NULL;
 
 					values[i] = val;
 					break;
