@@ -64,8 +64,8 @@ print "ok - survived the call (anonymous subroutine)\n";
 print ($check1 == (42 + 15) ? "ok\n" : "not ok - returned $check1\n");
 print ($check2 == (42 + 15) ? "ok\n" : "not ok - returned $check2\n");
 
-my $str_value = \"foo";
-my $cb4 = FFI::Raw::callback(sub { $$str_value }, FFI::Raw::str);
+my $str_value = "foo";
+my $cb4 = FFI::Raw::callback(sub { $str_value }, FFI::Raw::str);
 
 print "ok - survived the call\n";
 
@@ -85,7 +85,7 @@ my $value = $get_str_value -> call();
 
 print ($value eq 'foo' ? "ok\n" : "not ok - returned $value\n");
 
-$str_value = \undef;
+$str_value = undef;
 $return_str_callback->call($cb4);
 
 my $value = $get_str_value -> call();
@@ -98,7 +98,7 @@ my $reset = FFI::Raw -> new(
 );
 
 $reset -> call();
-my $buffer = FFI::Raw::MemPtr->new_from_buf( "bar\0", length "bar\0" );
+my $buffer = FFI::Raw::MemPtr -> new_from_buf("bar\0", length "bar\0");
 my $cb5 = FFI::Raw::callback(sub { $buffer }, FFI::Raw::ptr);
 
 print "ok - survived the call\n";
@@ -110,7 +110,7 @@ $value = $get_str_value -> call();
 print ($value eq 'bar' ? "ok\n" : "not ok - returned $value\n");
 
 $reset -> call();
-my $buffer = FFI::Raw::MemPtr->new_from_buf( "baz\0", length "baz\0" );
+my $buffer = FFI::Raw::MemPtr -> new_from_buf("baz\0", length "baz\0");
 my $cb6 = FFI::Raw::callback(sub { $$buffer }, FFI::Raw::ptr);
 
 print "ok - survived the call\n";

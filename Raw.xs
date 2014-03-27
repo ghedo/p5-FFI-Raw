@@ -202,29 +202,29 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 
 			if (self -> ret_value != NULL)
 				Safefree(self -> ret_value);
+
 			if (SvOK(value))
-				*(char**) ret = savepv(SvPV_nolen(value));
+				*(char **) ret = savepv(SvPV_nolen(value));
 			else
-				*(char**) ret = NULL;
-			self -> ret_value = *(void**) ret;
+				*(char **) ret = NULL;
+
+			self -> ret_value = *(void **) ret;
 
 			break;
 		}
 		case 'p': {
-			SV *value;
-
-			value = POPs;
+			SV *value = POPs;
 
 			if (!SvOK(value)) {
-				*(void**) ret = NULL;
+				*(void **) ret = NULL;
 				break;
 			}
 
-			if (sv_derived_from(value, "FFI::Raw::Ptr") || sv_derived_from(value, "FFI::Raw::Callback")) {
+			if (sv_derived_from(value, "FFI::Raw::Ptr") ||
+			    sv_derived_from(value, "FFI::Raw::Callback"))
 				value = SvRV(value);
-			}
 
-			*(void**) ret = INT_TO_PTR(value);
+			*(void **) ret = INT_TO_PTR(value);
 
 			break;
 		}
@@ -461,7 +461,7 @@ call(self, ...)
 					void **val;
 
 					Newx(val, 1, void *);
-					
+
 					if (!SvOK(arg))
 						*val = NULL;
 					else {
@@ -470,7 +470,7 @@ call(self, ...)
 						)) {
 							arg = SvRV(arg);
 						}
-	
+
 						if (sv_derived_from(
 							arg, "FFI::Raw::Callback"
 						)) {

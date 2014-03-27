@@ -13,16 +13,15 @@ extern EXPORT int return_int_callback(int (*cb)(int)) {
 	return cb(42);
 }
 
-
 static char str_value[512] = "";
 
 extern EXPORT void return_str_callback(const char *(*cb)(void)) {
 	const char *value = cb();
-	if(value == NULL) {
+
+	if (value == NULL)
 		strcpy(str_value, "NULL");
-	} else {
+	else
 		strcpy(str_value, value);
-	}
 }
 
 extern EXPORT const char *get_str_value() {
