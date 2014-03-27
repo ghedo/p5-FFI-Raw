@@ -35,7 +35,7 @@ sub MY::postamble {
 
   return <<'MAKE_LIBFFI';
 $(MYEXTLIB):
-	cd xs/libffi && ./configure MAKEINFO=true --disable-builddir --with-pic && $(MAKE)
+	cd deps/libffi && ./configure MAKEINFO=true --disable-builddir --with-pic && $(MAKE)
 
 .NOTPARALLEL:
 
@@ -96,9 +96,9 @@ my $ccflags = $Config::Config{ccflags} || '';
 override _build_WriteMakefile_args => sub {
 	return +{
 		%{ super() },
-		INC	=> '-I. -Ixs -Ixs/libffi/include',
-		OBJECT	=> '$(O_FILES) xs/libffi/.libs/libffi.a',
-		MYEXTLIB => 'xs/libffi/.libs/libffi.a',
+		INC	=> '-I. -Ixs -Ideps/libffi/include',
+		OBJECT	=> '$(O_FILES) deps/libffi/.libs/libffi.a',
+		MYEXTLIB => 'deps/libffi/.libs/libffi.a',
 	}
 };
 
