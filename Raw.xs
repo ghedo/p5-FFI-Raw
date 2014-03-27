@@ -22,8 +22,8 @@ typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #endif
 
-#include "perl_math_int64.h"
-#include "perl_math_int64.c"
+#include "math_int64/perl_math_int64.h"
+#include "math_int64/perl_math_int64.c"
 
 #if defined(_WIN32) || defined(__CYGWIN__)
 # include <windows.h>

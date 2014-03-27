@@ -96,7 +96,7 @@ my $ccflags = $Config::Config{ccflags} || '';
 override _build_WriteMakefile_args => sub {
 	return +{
 		%{ super() },
-		INC	=> '-I. -Ixs -Ideps/libffi/include',
+		INC	=> '-I. -Ixs -Ideps -Ideps/libffi/include',
 		OBJECT	=> '$(O_FILES) deps/libffi/.libs/libffi.a',
 		MYEXTLIB => 'deps/libffi/.libs/libffi.a',
 	}
