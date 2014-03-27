@@ -58,7 +58,7 @@ typedef struct FFI_RAW_CALLBACK {
 	ffi_cif cif;
 	ffi_type *ret;
 	char ret_type;
-	const char *ret_value;
+	void *ret_value;
 	ffi_type **args;
 	char *args_types;
 	unsigned int argc;
@@ -206,7 +206,7 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 				*(char**) ret = strdup(SvPV_nolen(value));
 			else
 				*(char**) ret = NULL;
-			self -> ret_value = *(char**) ret;
+			self -> ret_value = *(void**) ret;
 			
 			break;
 		}
