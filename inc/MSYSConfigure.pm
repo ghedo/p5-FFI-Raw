@@ -10,7 +10,7 @@ use File::Temp qw(tempdir);
 use Alien::MSYS qw(msys_run);
 
 sub main::configure {
-	chdir 'xs/libffi';
+	chdir 'deps/libffi';
 
 	my $configure_args = 'MAKEILFO=true --disable-builddir --with-pic';
 
