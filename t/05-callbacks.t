@@ -110,7 +110,7 @@ $value = $get_str_value -> call();
 print ($value eq 'bar' ? "ok\n" : "not ok - returned $value\n");
 
 $reset -> call();
-my $buffer = FFI::Raw::MemPtr -> new_from_buf("baz\0", length "baz\0");
+$buffer = FFI::Raw::MemPtr -> new_from_buf("baz\0", length "baz\0");
 my $cb6 = FFI::Raw::callback(sub { $$buffer }, FFI::Raw::ptr);
 
 print "ok - survived the call\n";
