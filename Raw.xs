@@ -203,7 +203,7 @@ void _ffi_raw_cb_wrap(ffi_cif *cif, void *ret, void *args[], void *argp) {
 			if (self -> ret_value != NULL)
 				Safefree(self -> ret_value);
 			if (SvOK(value))
-				*(char**) ret = strdup(SvPV_nolen(value));
+				*(char**) ret = savepv(SvPV_nolen(value));
 			else
 				*(char**) ret = NULL;
 			self -> ret_value = *(void**) ret;
