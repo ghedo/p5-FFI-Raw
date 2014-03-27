@@ -5,6 +5,7 @@ Revision history for FFI-Raw
  - Avoid warnings when using undef to mean NULL (GH#44) (thanks, @plicease!)
  - Support returning pointers and strings from callbacks
    (GH#42) (GH#43) (thanks, @plicease!)
+ - Update to libffi 3.1-rc1 (should hopefully fix a few build failures)
 
 0.28      2014-02-14 13:09:10 Europe/Rome
 
