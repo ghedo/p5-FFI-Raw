@@ -8,7 +8,7 @@ perl:
  - "5.18"
 
 install:
- - cpanm --notest Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO Dist::Zilla::Plugin::OSPrereqs Pod::Coverage::TrustPod
+ - cpanm --notest Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO Dist::Zilla::Plugin::OSPrereqs Pod::Coverage::TrustPod Math::Int64
  - dzil listdeps --missing | cpanm --notest
 
 script:
