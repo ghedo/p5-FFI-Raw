@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Fix memory leak in Callback objects (GH#46) (thanks, @plicease!)
+
 0.31      2014-04-30 10:23:28+02:00 Europe/Rome
 
  - Re-upload to CPAN (was deleted by accident -.-")
