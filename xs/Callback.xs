@@ -41,6 +41,8 @@ DESTROY(self)
 	CODE:
 		SvREFCNT_dec(self -> coderef);
 
+		ffi_closure_free(self -> closure);
+
 		if (self -> ret_value != NULL)
 			Safefree(self -> ret_value);
 		Safefree(self -> args_types);
