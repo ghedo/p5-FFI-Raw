@@ -26,6 +26,22 @@ if (!$use_system_ffi && eval { require ExtUtils::PkgConfig }) {
   }
 }
 
+if (!$use_system_ffi && eval { require PkgConfig }) {
+  my $pkg = PkgConfig->find('libffi');
+
+  unless ($pkg->errmsg) {
+    my %pkg_config = (
+      libs   => join(' ', $pkg->get_ldflags),
+      cflags => join(' ', $pkg->get_cflags),
+    );
+
+    if (check_lib(header => "ffi.h", LIBS => $pkg_config{libs}, INC => $pkg_config{cflags})) {
+      $use_system_ffi = 1;
+      $pkg_config = \%pkg_config;
+    }
+  }
+}
+
 sub MY::postamble {
   return if $use_system_ffi;
 
