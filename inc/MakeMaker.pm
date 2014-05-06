@@ -105,6 +105,10 @@ if ($use_system_ffi) {
 
 $WriteMakefileArgs{LIBS} = "@libs" if @libs;
 
+if ($^O eq 'MSWin32' && !$use_system_ffi) {
+  $WriteMakefileArgs{PREREQ_PM}{'Alien::MSYS'} = '0';
+}
+
 EXTRA
 };
 
