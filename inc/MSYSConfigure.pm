@@ -24,7 +24,7 @@ sub main::configure {
 		copy('msvcc.sh', "$dir/msvcc.sh");
 		$ENV{PATH} = join($Config{path_sep}, $dir, $ENV{PATH});
 
-		$configure_args .= ' --enable-static --disable-shared';
+		$configure_args .= ' --enable-static --disable-shared LD=link CPP="cl -nologo -EP"';
 
 		if ($Config{archname} =~ /^MSWin32-x64/) {
 			$configure_args .= ' CC="msvcc.sh -m64"';
