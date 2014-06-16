@@ -2,6 +2,8 @@ Revision history for FFI-Raw
 
 {{$NEXT}}
 
+ - Fix build with Visual C++ (GH#50) (thanks, @plicease!)
+
 0.32      2014-06-02 15:11:41+02:00 Europe/Rome
 
  - Fix memory leak in Callback objects (GH#46) (thanks, @plicease!)
