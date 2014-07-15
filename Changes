@@ -3,6 +3,8 @@ Revision history for FFI-Raw
 {{$NEXT}}
 
  - Fix build with Visual C++ (GH#50) (thanks, @plicease!)
+ - Rename FFI::Raw::MemPtr -> tostr() to to_perl_str() (old programs should
+   still work though)
 
 0.32      2014-06-02 15:11:41+02:00 Europe/Rome
 
