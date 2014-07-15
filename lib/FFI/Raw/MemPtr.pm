@@ -63,10 +63,19 @@ a C<FFI::Raw::MemPtr> or a pointer returned by another function.
 
 This is the C<FFI::Raw> equivalent of a pointer to a pointer.
 
-=head2 tostr( [$length] )
+=head2 to_perl_str( [$length] )
 
 Convert a C<FFI::Raw::MemPtr> to a Perl string. If C<$length> is not provided,
 the length of the string will be computed using C<strlen()>.
+
+=for Pod::Coverage tostr
+
+=cut
+
+sub tostr {
+	my $self = shift;
+	return $self -> to_perl_str(@_)
+}
 
 =head1 AUTHOR
 

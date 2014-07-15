@@ -7,16 +7,16 @@ my $greeting = "Hello\0World";
 
 my $buf = FFI::Raw::MemPtr -> new_from_buf($greeting, length $greeting);
 
-my $got = $buf -> tostr;
+my $got = $buf -> to_perl_str;
 
-is $got, "Hello", "Without arguments, tostr uses strlen() to determine the length";
+is $got, "Hello", "Without arguments, to_perl_str uses strlen() to determine the length";
 
-$got = $buf -> tostr(length $greeting);
+$got = $buf -> to_perl_str(length $greeting);
 
-is $got, $greeting, "A length to tostr() is honoured, and binary data is retrieved correctly";
+is $got, $greeting, "A length to to_perl_str() is honoured, and binary data is retrieved correctly";
 
-$got = $buf -> tostr(0);
+$got = $buf -> to_perl_str(0);
 
-is $got, '', "A length of 0 tostr() is handled correctly, returning an empty string";
+is $got, '', "A length of 0 to_perl_str() is handled correctly, returning an empty string";
 
 done_testing;

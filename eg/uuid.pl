@@ -22,4 +22,4 @@ my $str  = FFI::Raw::memptr(37); # 37 is the size of an UUID string
 $uuid_generate -> call($uuid);
 $uuid_unparse  -> call($uuid, $str);
 
-say $str -> tostr;
+say $str -> to_perl_str;

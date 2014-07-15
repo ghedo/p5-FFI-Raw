@@ -49,7 +49,7 @@ new_from_ptr(class, pointer)
 	OUTPUT: RETVAL
 
 SV *
-tostr(self, ...)
+to_perl_str(self, ...)
 	FFI_Raw_MemPtr_t *self
 
 	PROTOTYPE: $;$

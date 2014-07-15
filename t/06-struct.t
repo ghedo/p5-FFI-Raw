@@ -36,7 +36,7 @@ $return_one_struct -> call($arg);
 
 print "ok - survived the call\n";
 
-my ($int, $str) = unpack('ix![p]p', $arg -> tostr(length $packed));
+my ($int, $str) = unpack('ix![p]p', $arg -> to_perl_str(length $packed));
 
 print "ok - got passed int 42\n" if $int == 42;
 print "ok - str\n" if $str eq 'hello';
