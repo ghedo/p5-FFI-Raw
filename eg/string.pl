@@ -5,10 +5,8 @@ use warnings;
 
 use FFI::Raw;
 
-my $libc = 'libc.so.6';
-
 my $strlen = FFI::Raw -> new(
-	$libc, 'strlen',
+	undef, 'strlen',
 	FFI::Raw::int,
 	FFI::Raw::str
 );
@@ -16,7 +14,7 @@ my $strlen = FFI::Raw -> new(
 say $strlen -> call('somestring');
 
 my $strstr = FFI::Raw -> new(
-	$libc, 'strstr',
+	undef, 'strstr',
 	FFI::Raw::str,
 	FFI::Raw::str,
 	FFI::Raw::str
@@ -25,7 +23,7 @@ my $strstr = FFI::Raw -> new(
 say $strstr -> call('somestring', 'string');
 
 my $puts = FFI::Raw -> new(
-	$libc, 'puts',
+	undef, 'puts',
 	FFI::Raw::int,
 	FFI::Raw::str
 );
@@ -33,7 +31,7 @@ my $puts = FFI::Raw -> new(
 say $puts -> call("lol");
 
 my $strerror = FFI::Raw -> new(
-	$libc, 'strerror',
+	undef, 'strerror',
 	FFI::Raw::str,
 	FFI::Raw::int
 );

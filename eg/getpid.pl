@@ -5,10 +5,8 @@ use warnings;
 
 use FFI::Raw;
 
-my $libc = 'libc.so.6';
-
 my $getpid = FFI::Raw -> new(
-	$libc, 'getpid',
+	undef, 'getpid',
 	FFI::Raw::int,
 );
 
