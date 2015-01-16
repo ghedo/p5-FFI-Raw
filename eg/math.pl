@@ -17,7 +17,7 @@ my $fdim = FFI::Raw -> new(
 say $fdim -> call(7.0, 2.0);
 
 my $cos = FFI::Raw -> new(
-	'libm.so', 'cos',
+	$libm, 'cos',
 	FFI::Raw::double, # return value
 	FFI::Raw::double  # arg #1
 );
@@ -25,7 +25,7 @@ my $cos = FFI::Raw -> new(
 say $cos -> call(2.0);
 
 my $fmax = FFI::Raw -> new(
-	'libm.so', 'fmax',
+	$libm, 'fmax',
 	FFI::Raw::double, # return value
 	FFI::Raw::double, # arg #1
 	FFI::Raw::double  # arg #2
