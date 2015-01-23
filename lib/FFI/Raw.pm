@@ -68,7 +68,7 @@ of the wanted function.
 
 =head2 call( [$arg ...] )
 
-Execute the C<FFI::Raw> function. This methoed also takes a variable number of
+Execute the C<FFI::Raw> function. This method also takes a variable number of
 arguments, which are passed to the called function. The argument types must
 match the types passed to C<new> (or C<new_from_ptr>).
 
